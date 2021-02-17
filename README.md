@@ -24,19 +24,7 @@ gem 'prefixed_ids'
 
 ## 📝 Usage
 
-First, you'll need to generate a migration to add the prefix_id column to your model(s).
-
-```ruby
-class AddPrefixIdToUsers< ActiveRecord::Migration
-  def change
-    add_index :users, :prefix_id, unique: true
-  end
-end
-```
-
-It's important the `prefix_id` column is indexed and unique.
-
-Then you can add `has_prefix_id :my_prefix` to your models to autogenerate prefixed IDs.
+Add `has_prefix_id :my_prefix` to your models to autogenerate prefixed IDs.
 
 ```ruby
 class User < ApplicationRecord
@@ -44,7 +32,24 @@ class User < ApplicationRecord
 end
 ```
 
-This will generate a value like `user_1234abcd` in the User's `prefix_id` column.
+This will generate a value like `user_1234abcd`.
+
+To query using the prefixed ID, simply you can use either `find` or `find_by_prefixed_id`:
+
+```ruby
+User.find("user_5vJjbzXq9KrLEMm32iAnOP0xGDYk6dpe")
+User.find_by_prefix_id("user_5vJjbzXq9KrLEMm32iAnOP0xGDYk6dpe")
+```
+
+We also override `to_param` by default so it'll be used in URLs automatically.
+
+To disable find and to_param overrides, simply pass in the options:
+
+```ruby
+class User < ApplicationRecord
+  has_prefix_id :user, override_find: false, override_param: false
+end
+```
 
 ### Customizing
 
@@ -52,7 +57,7 @@ You can customize the prefix, length, and attribute name for PrefixedIds.
 
 ```ruby
 class Account < ApplicationRecord
-  has_prefix_id :acct, attribute: :my_id, length: 32
+  has_prefix_id :acct, minimum_length: 32, override_find: false, to_param: false
 end
 ```
 
