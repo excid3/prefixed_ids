@@ -1,4 +1,10 @@
-# PrefixedIds
+<p align="center">
+  <h1>Prefixed IDs</h1>
+</p>
+
+### 🆔 Friendly Prefixed IDs for your Ruby on Rails models
+
+[![Build Status](https://github.com/excid3/prefixed_ids/workflows/Tests/badge.svg)](https://github.com/excid3/prefixed_ids/actions) [![Gem Version](https://badge.fury.io/rb/prefixed_ids.svg)](https://badge.fury.io/rb/prefixed_ids)
 
 Generate prefixed IDs for your models with a friendly prefix. For example:
 
