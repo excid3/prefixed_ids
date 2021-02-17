@@ -13,6 +13,8 @@ user_12345abcd
 acct_23lksjdg3
 ```
 
+Inspired by [Stripe's prefixed IDs](https://stripe.com/docs/api) in their API.
+
 ## 🚀 Installation
 Add this line to your application's Gemfile:
 
