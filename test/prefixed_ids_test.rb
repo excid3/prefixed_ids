@@ -25,4 +25,12 @@ class PrefixedIdsTest < ActiveSupport::TestCase
   test "customizable length" do
     assert_equal 37, Account.create.prefix_id.length
   end
+
+  test "raises error under minimum length" do
+    assert_raises PrefixedIds::MinimumLengthError do
+      class InvalidLength < ApplicationRecord
+        has_prefix_id :il, length: 5
+      end
+    end
+  end
 end

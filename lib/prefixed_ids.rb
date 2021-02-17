@@ -4,6 +4,8 @@ require "prefixed_ids/engine"
 module PrefixedIds
   MINIMUM_TOKEN_LENGTH = 24
 
+  class MinimumLengthError < StandardError; end
+
   module Attribute
     extend ActiveSupport::Concern
 
