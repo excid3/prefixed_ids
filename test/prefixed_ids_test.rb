@@ -28,9 +28,8 @@ class PrefixedIdsTest < ActiveSupport::TestCase
 
   test "raises error under minimum length" do
     assert_raises PrefixedIds::MinimumLengthError do
-      class InvalidLength < ApplicationRecord
-        has_prefix_id :il, length: 5
-      end
+      # Lazily loaded so this shouldn't error until we access it
+      InvalidLength.create
     end
   end
 end
