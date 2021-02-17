@@ -19,7 +19,7 @@ Inspired by [Stripe's prefixed IDs](https://stripe.com/docs/api) in their API.
 Add this line to your application's Gemfile:
 
 ```ruby
-bundle add 'prefixed_ids'
+gem 'prefixed_ids'
 ```
 
 ## 📝 Usage
