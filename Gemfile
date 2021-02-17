@@ -1,10 +1,12 @@
-# frozen_string_literal: true
-
 source "https://rubygems.org"
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-# Specify your gem's dependencies in prefixed_ids.gemspec
+# Specify your gem's dependencies in prefixed_ids.gemspec.
 gemspec
 
-gem "rake", "~> 13.0"
+group :development do
+  gem "sqlite3"
+end
 
-gem "minitest", "~> 5.0"
+# To use a debugger
+# gem 'byebug', group: [:development, :test]
