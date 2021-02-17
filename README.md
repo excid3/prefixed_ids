@@ -1,8 +1,13 @@
 # PrefixedIds
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/prefixed_ids`. To experiment with that code, run `bin/console` for an interactive prompt.
+Generate prefixed IDs for your models with a friendly prefix.
 
-TODO: Delete this and the text above, and describe your gem
+For example:
+
+```ruby
+user_12345abcd
+acct_23lksjdg3
+```
 
 ## Installation
 
@@ -22,7 +27,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Coming soon
 
 ## Development
 
