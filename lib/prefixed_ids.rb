@@ -16,7 +16,7 @@ module PrefixedIds
         # Load securerandom only when has_secure_token is used.
         require "active_support/core_ext/securerandom"
         define_method("regenerate_#{attribute}") { update! attribute => self.class.generate_unique_prefix_id(prefix, length: length) }
-        before_create { send("#{attribute}=", self.class.generate_unique_prefix_id(prefix, length: length)) unless send("#{attribute}?") }
+        before_save { send("#{attribute}=", self.class.generate_unique_prefix_id(prefix, length: length)) unless send("#{attribute}?") }
       end
 
       def generate_unique_prefix_id(prefix, length: MINIMUM_TOKEN_LENGTH)
