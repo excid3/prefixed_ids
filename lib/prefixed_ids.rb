@@ -74,7 +74,7 @@ module PrefixedIds
 
     class_methods do
       def find(*ids)
-        super(*ids.map{ |id| _prefix_id.decode(id) })
+        super(*ids.map { |id| _prefix_id.decode(id) })
       end
     end
   end
