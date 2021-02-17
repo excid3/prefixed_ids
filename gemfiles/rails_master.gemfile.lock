@@ -87,7 +87,7 @@ GIT
 PATH
   remote: ..
   specs:
-    prefixed_ids (1.0.0)
+    prefixed_ids (1.0.1)
       rails (>= 6.0.0)
 
 GEM
