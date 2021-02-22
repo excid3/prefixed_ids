@@ -4,32 +4,29 @@ require "prefixed_ids/engine"
 require "hashids"
 
 module PrefixedIds
+  class Error < StandardError; end
+
+  autoload :PrefixId, "prefixed_ids/prefix_id"
+
   TOKEN = 123
+  DELIMITER = "_"
 
   mattr_accessor :alphabet, default: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
   mattr_accessor :minimum_length, default: 24
 
-  class PrefixId
-    attr_reader :hashids, :model, :prefix
+  mattr_accessor :models, default: {}
 
-    def initialize(model, prefix, minimum_length: PrefixedIds.minimum_length, alphabet: PrefixedIds.alphabet, **options)
-      @alphabet = alphabet
-      @model = model
-      @prefix = prefix.to_s
-      @hashids = Hashids.new(model.table_name, minimum_length)
-    end
+  def self.find(prefix_id)
+    prefix, _ = split_id(prefix_id)
+    models.fetch(prefix).find_by_prefix_id(prefix_id)
+  rescue KeyError
+    raise Error, "Unable to find model with prefix `#{prefix}`. Available prefixes are: #{models.keys.join(", ")}"
+  end
 
-    def encode(id)
-      prefix + "_" + @hashids.encode(TOKEN, id)
-    end
-
-    # decode returns an array
-    def decode(id, fallback: false)
-      fallback_value = fallback ? id : nil
-      id_without_prefix = id.to_s.rpartition("_").last
-      decoded_id = @hashids.decode(id_without_prefix).last
-      decoded_id || fallback_value
-    end
+  # Splits a prefixed ID into its prefix and ID
+  def self.split_id(prefix_id)
+    prefix, _, id = prefix_id.to_s.rpartition(DELIMITER)
+    [prefix, id]
   end
 
   # Adds `has_prefix_id` method
@@ -46,6 +43,9 @@ module PrefixedIds
         include Finder if override_find
         include ToParam if override_param
         self._prefix_id = PrefixId.new(self, prefix, **options)
+
+        # Register with PrefixedIds to support PrefixedIds#find
+        PrefixedIds.models[prefix.to_s] = self
       end
     end
   end

@@ -51,6 +51,17 @@ class User < ApplicationRecord
 end
 ```
 
+### Generic lookup
+
+Imagine you have a prefixed ID but you don't know which model it belongs to.
+
+```ruby
+PrefixedIds.find("user_5vJjbzXq9KrLEMm3")
+#=> #<User>
+PrefixedIds.find("acct_2iAnOP0xGDYk6dpe")
+#=> #<Account>
+```
+
 ### Customizing
 
 You can customize the prefix, length, and attribute name for PrefixedIds.

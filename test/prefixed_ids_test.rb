@@ -53,4 +53,19 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     account = Account.create
     assert_not_equal account.prefix_id, account.to_param
   end
+
+  test "find looks up the correct model" do
+    user = User.create
+    assert_equal user, PrefixedIds.find(user.prefix_id)
+  end
+
+  test "find with invalid prefix" do
+    assert_raises PrefixedIds::Error do
+      PrefixedIds.find("unknown_1")
+    end
+  end
+
+  test "split_id" do
+    assert_equal ["user", "1234"], PrefixedIds.split_id("user_1234")
+  end
 end
