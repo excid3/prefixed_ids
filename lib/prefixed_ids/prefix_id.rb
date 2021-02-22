@@ -16,7 +16,7 @@ module PrefixedIds
     # decode returns an array
     def decode(id, fallback: false)
       fallback_value = fallback ? id : nil
-      prefix, id_without_prefix = PrefixedIds.split_id(id)
+      _, id_without_prefix = PrefixedIds.split_id(id)
       decoded_id = @hashids.decode(id_without_prefix).last
       decoded_id || fallback_value
     end
