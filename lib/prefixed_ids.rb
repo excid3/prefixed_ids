@@ -8,7 +8,6 @@ module PrefixedIds
 
   autoload :PrefixId, "prefixed_ids/prefix_id"
 
-  TOKEN = 123
   DELIMITER = "_"
 
   mattr_accessor :alphabet, default: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"

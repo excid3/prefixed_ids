@@ -1,16 +1,16 @@
 module PrefixedIds
   class PrefixId
-    attr_reader :hashids, :model, :prefix
+    attr_reader :hashids, :prefix
+
+    TOKEN = 123
 
     def initialize(model, prefix, minimum_length: PrefixedIds.minimum_length, alphabet: PrefixedIds.alphabet, **options)
-      @alphabet = alphabet
-      @model = model
       @prefix = prefix.to_s
-      @hashids = Hashids.new(model.table_name, minimum_length)
+      @hashids = Hashids.new(model.table_name, minimum_length, alphabet)
     end
 
     def encode(id)
-      prefix + "_" + @hashids.encode(TOKEN, id)
+      prefix + PrefixedIds::DELIMITER + @hashids.encode(TOKEN, id)
     end
 
     # decode returns an array

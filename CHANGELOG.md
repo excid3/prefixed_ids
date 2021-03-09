@@ -1,5 +1,7 @@
 ### Unreleased
 
+* [FIX] Custom alphabet was not being used to generate the prefixed_id - @rbague
+
 ### 1.2.0
 
 * Add `PrefixedIds.find` to lookup any model by prefixed ID

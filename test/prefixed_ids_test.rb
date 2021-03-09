@@ -68,4 +68,15 @@ class PrefixedIdsTest < ActiveSupport::TestCase
   test "split_id" do
     assert_equal ["user", "1234"], PrefixedIds.split_id("user_1234")
   end
+
+  test "can use a custom alphabet" do
+    default_encoder = PrefixedIds::PrefixId.new(User, "user", alphabet: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
+    custom_encoder = PrefixedIds::PrefixId.new(User, "user", alphabet: "5N6y2rljDQak4xgzn8ZR1oKYLmJpEbVq3OBv9WwXPMe7")
+
+    default = default_encoder.encode(1)
+    custom = custom_encoder.encode(1)
+
+    assert_not_equal default, custom
+    assert_equal default_encoder.decode(default), custom_encoder.decode(custom)
+  end
 end
