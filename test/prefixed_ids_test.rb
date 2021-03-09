@@ -79,4 +79,10 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     assert_not_equal default, custom
     assert_equal default_encoder.decode(default), custom_encoder.decode(custom)
   end
+
+  test "can change the default delimiter delimiter" do
+    slash = PrefixedIds::PrefixId.new(User, "user", delimiter: "/")
+
+    assert slash.encode(1).start_with?("user/")
+  end
 end
