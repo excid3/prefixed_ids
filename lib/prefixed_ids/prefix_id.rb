@@ -18,8 +18,16 @@ module PrefixedIds
     def decode(id, fallback: false)
       fallback_value = fallback ? id : nil
       _, id_without_prefix = PrefixedIds.split_id(id, @delimiter)
-      decoded_id = @hashids.decode(id_without_prefix).last
-      decoded_id || fallback_value
+      decoded_hashid = @hashids.decode(id_without_prefix)
+      return fallback_value unless valid?(decoded_hashid)
+
+      decoded_hashid.last || fallback_value
+    end
+
+    private
+
+    def valid?(decoded_hashid)
+      decoded_hashid.size == 2 && decoded_hashid.first == TOKEN
     end
   end
 end

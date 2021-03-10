@@ -85,4 +85,19 @@ class PrefixedIdsTest < ActiveSupport::TestCase
 
     assert slash.encode(1).start_with?("user/")
   end
+
+  test "checks for a valid id upon decoding" do
+    prefix = PrefixedIds::PrefixId.new(User, "user")
+    hashid = Hashids.new(User.table_name, PrefixedIds.minimum_length, PrefixedIds.alphabet)
+
+    first = prefix.encode(1)
+    second = hashid.encode(1)
+
+    assert_not_equal first.delete_prefix("user" + PrefixedIds.delimiter), second
+    assert_equal prefix.decode(second, fallback: true), second
+
+    decoded = hashid.decode(second)
+    assert_equal decoded.size, 1
+    assert_equal decoded.first, 1
+  end
 end
