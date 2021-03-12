@@ -68,4 +68,36 @@ class PrefixedIdsTest < ActiveSupport::TestCase
   test "split_id" do
     assert_equal ["user", "1234"], PrefixedIds.split_id("user_1234")
   end
+
+  test "can use a custom alphabet" do
+    default_encoder = PrefixedIds::PrefixId.new(User, "user", alphabet: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
+    custom_encoder = PrefixedIds::PrefixId.new(User, "user", alphabet: "5N6y2rljDQak4xgzn8ZR1oKYLmJpEbVq3OBv9WwXPMe7")
+
+    default = default_encoder.encode(1)
+    custom = custom_encoder.encode(1)
+
+    assert_not_equal default, custom
+    assert_equal default_encoder.decode(default), custom_encoder.decode(custom)
+  end
+
+  test "can change the default delimiter delimiter" do
+    slash = PrefixedIds::PrefixId.new(User, "user", delimiter: "/")
+
+    assert slash.encode(1).start_with?("user/")
+  end
+
+  test "checks for a valid id upon decoding" do
+    prefix = PrefixedIds::PrefixId.new(User, "user")
+    hashid = Hashids.new(User.table_name, PrefixedIds.minimum_length, PrefixedIds.alphabet)
+
+    first = prefix.encode(1)
+    second = hashid.encode(1)
+
+    assert_not_equal first.delete_prefix("user" + PrefixedIds.delimiter), second
+    assert_equal prefix.decode(second, fallback: true), second
+
+    decoded = hashid.decode(second)
+    assert_equal decoded.size, 1
+    assert_equal decoded.first, 1
+  end
 end

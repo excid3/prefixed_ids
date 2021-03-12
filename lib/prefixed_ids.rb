@@ -8,9 +8,7 @@ module PrefixedIds
 
   autoload :PrefixId, "prefixed_ids/prefix_id"
 
-  TOKEN = 123
-  DELIMITER = "_"
-
+  mattr_accessor :delimiter, default: "_"
   mattr_accessor :alphabet, default: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
   mattr_accessor :minimum_length, default: 24
 
@@ -24,8 +22,8 @@ module PrefixedIds
   end
 
   # Splits a prefixed ID into its prefix and ID
-  def self.split_id(prefix_id)
-    prefix, _, id = prefix_id.to_s.rpartition(DELIMITER)
+  def self.split_id(prefix_id, delimiter = PrefixedIds.delimiter)
+    prefix, _, id = prefix_id.to_s.rpartition(delimiter)
     [prefix, id]
   end
 
