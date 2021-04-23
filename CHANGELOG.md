@@ -2,7 +2,9 @@
 
 ### 1.2.1
 
-* Fallback to ID when overriding find so fixtures still work
+* [FIX] Fallback to ID when overriding find so fixtures still work - @excid3
+* [ADD] Add `PrefixedIds.delimiter` to be able to change the default delimiter - @rbague
+* [FIX] Custom alphabet was not being used to generate the prefixed_id - @rbague
 
 ### 1.2.0
 
