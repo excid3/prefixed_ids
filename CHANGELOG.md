@@ -1,5 +1,9 @@
 ### Unreleased
 
+### 1.2.1
+
+* Fallback to ID when overriding find so fixtures still work
+
 ### 1.2.0
 
 * Add `PrefixedIds.find` to lookup any model by prefixed ID

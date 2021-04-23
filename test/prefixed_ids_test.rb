@@ -68,4 +68,11 @@ class PrefixedIdsTest < ActiveSupport::TestCase
   test "split_id" do
     assert_equal ["user", "1234"], PrefixedIds.split_id("user_1234")
   end
+
+  # See https://github.com/jcypret/hashid-rails/pull/46/files
+  test "works with fixtures" do
+    assert_nothing_raised do
+      users(:one)
+    end
+  end
 end
