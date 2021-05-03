@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    prefixed_ids (1.2.1)
+    prefixed_ids (1.2.2)
       hashids (>= 1.0.0, < 2.0.0)
       rails (>= 6.0.0)
 
@@ -85,7 +85,7 @@ GEM
     marcel (1.0.1)
     method_source (1.0.0)
     mini_mime (1.1.0)
-    mini_portile2 (2.5.0)
+    mini_portile2 (2.5.1)
     minitest (5.14.4)
     nio4r (2.5.7)
     nokogiri (1.11.3)
@@ -96,7 +96,7 @@ GEM
     nokogiri (1.11.3-x86_64-linux)
       racc (~> 1.4)
     parallel (1.20.1)
-    parser (3.0.1.0)
+    parser (3.0.1.1)
       ast (~> 2.4.1)
     racc (1.5.2)
     rack (2.2.3)
@@ -141,8 +141,8 @@ GEM
       rubocop-ast (>= 1.2.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.4.1)
-      parser (>= 2.7.1.5)
+    rubocop-ast (1.5.0)
+      parser (>= 3.0.1.1)
     rubocop-performance (1.10.1)
       rubocop (>= 0.90.0, < 2.0)
       rubocop-ast (>= 0.4.0)
@@ -183,4 +183,4 @@ DEPENDENCIES
   standardrb
 
 BUNDLED WITH
-   2.2.9
+   2.2.16

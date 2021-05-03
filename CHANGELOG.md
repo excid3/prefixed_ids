@@ -1,5 +1,10 @@
 ### Unreleased
 
+### 1.2.2
+
+* [FIX] Override find method on ActiveRecord::Relation - @excid3
+* [FIX] Override find method on has_many associations - @excid3
+
 ### 1.2.1
 
 * [FIX] Fallback to ID when overriding find so fixtures still work - @excid3
