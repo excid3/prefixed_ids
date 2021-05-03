@@ -74,6 +74,16 @@ module PrefixedIds
       def find(*ids)
         super(*ids.map { |id| _prefix_id.decode(id, fallback: true) })
       end
+
+      def relation
+        super.tap { |r| r.extend ClassMethods }
+      end
+
+      def has_many(*args, &block)
+        options = args.extract_options!
+        options[:extend] = Array(options[:extend]).push(ClassMethods)
+        super(*args, **options, &block)
+      end
     end
   end
 

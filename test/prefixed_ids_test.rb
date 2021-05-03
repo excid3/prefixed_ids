@@ -14,48 +14,48 @@ class PrefixedIdsTest < ActiveSupport::TestCase
   end
 
   test "has a prefix ID" do
-    prefix_id = User.create.prefix_id
+    prefix_id = users(:one).prefix_id
     assert_not_nil prefix_id
     assert prefix_id.start_with?("user_")
   end
 
   test "can lookup by prefix ID" do
-    user = User.create
+    user = users(:one)
     assert_equal user, User.find_by_prefix_id(user.prefix_id)
   end
 
   test "to param" do
-    assert User.create.to_param.start_with?("user_")
+    assert users(:one).to_param.start_with?("user_")
   end
 
   test "overridden finders" do
-    user = User.create
+    user = users(:one)
     assert_equal user, User.find(user.prefix_id)
   end
 
   test "overridden finders with multiple args" do
-    user = User.create
-    user2 = User.create
+    user = users(:one)
+    user2 = users(:two)
     assert_equal [user, user2], User.find(user.prefix_id, user2.prefix_id)
   end
 
   test "minimum length" do
-    assert_equal 32 + 5, Account.create.prefix_id.length
+    assert_equal 32 + 5, accounts(:one).prefix_id.length
   end
 
   test "doesn't override find when disabled" do
     assert_raises ActiveRecord::RecordNotFound do
-      Account.find Account.create.prefix_id
+      Account.find accounts(:one).prefix_id
     end
   end
 
   test "doesn't override to_param when disabled" do
-    account = Account.create
+    account = accounts(:one)
     assert_not_equal account.prefix_id, account.to_param
   end
 
   test "find looks up the correct model" do
-    user = User.create
+    user = users(:one)
     assert_equal user, PrefixedIds.find(user.prefix_id)
   end
 
@@ -106,5 +106,16 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     assert_nothing_raised do
       users(:one)
     end
+  end
+
+  test "works with relations" do
+    user = users(:one)
+    assert_equal user, User.default_scoped.find(user.to_param)
+  end
+
+  test "works with has_many" do
+    user = users(:one)
+    post = user.posts.first
+    assert_equal post, user.posts.find(post.to_param)
   end
 end
