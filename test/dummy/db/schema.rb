@@ -15,7 +15,6 @@ ActiveRecord::Schema.define(version: 2021_05_03_145247) do
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index "\"prefix_id\"", name: "index_accounts_on_prefix_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -26,10 +25,8 @@ ActiveRecord::Schema.define(version: 2021_05_03_145247) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "prefix_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["prefix_id"], name: "index_users_on_prefix_id"
   end
 
   add_foreign_key "posts", "users"
