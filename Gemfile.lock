@@ -178,8 +178,6 @@ GEM
     standard (1.16.1)
       rubocop (= 1.35.1)
       rubocop-performance (= 1.14.3)
-    standardrb (1.0.1)
-      standard
     strscan (3.0.4)
     thor (1.2.1)
     timeout (0.3.0)
@@ -200,7 +198,7 @@ DEPENDENCIES
   appraisal
   prefixed_ids!
   sqlite3
-  standardrb
+  standard
 
 BUNDLED WITH
    2.3.20
