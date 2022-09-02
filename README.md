@@ -33,11 +33,14 @@ end
 ```
 
 This will generate a value like `user_1234abcd`.
+
 To retrieve the id, simply call:
 
 ```ruby
-User.prefixed_id
+User.to_param
 ```
+
+Or `User.prefix_id` if to_param override is disabled.
 
 To query using the prefixed ID, simply you can use either `find` or `find_by_prefixed_id`:
 
