@@ -126,7 +126,7 @@ GEM
     parser (3.0.1.1)
       ast (~> 2.4.1)
     racc (1.6.0)
-    rack (2.2.3)
+    rack (2.2.4)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (7.0.2.3)
