@@ -1,96 +1,3 @@
-GIT
-  remote: https://github.com/rails/rails.git
-  revision: ba36ae05840bc31244abb7e3ff9c591bace4da71
-  branch: main
-  specs:
-    actioncable (7.1.0.alpha)
-      actionpack (= 7.1.0.alpha)
-      activesupport (= 7.1.0.alpha)
-      nio4r (~> 2.0)
-      websocket-driver (>= 0.6.1)
-      zeitwerk (~> 2.6)
-    actionmailbox (7.1.0.alpha)
-      actionpack (= 7.1.0.alpha)
-      activejob (= 7.1.0.alpha)
-      activerecord (= 7.1.0.alpha)
-      activestorage (= 7.1.0.alpha)
-      activesupport (= 7.1.0.alpha)
-      mail (>= 2.7.1)
-      net-imap
-      net-pop
-      net-smtp
-    actionmailer (7.1.0.alpha)
-      actionpack (= 7.1.0.alpha)
-      actionview (= 7.1.0.alpha)
-      activejob (= 7.1.0.alpha)
-      activesupport (= 7.1.0.alpha)
-      mail (~> 2.5, >= 2.5.4)
-      net-imap
-      net-pop
-      net-smtp
-      rails-dom-testing (~> 2.0)
-    actionpack (7.1.0.alpha)
-      actionview (= 7.1.0.alpha)
-      activesupport (= 7.1.0.alpha)
-      rack (~> 2.0, >= 2.2.0)
-      rack-test (>= 0.6.3)
-      rails-dom-testing (~> 2.0)
-      rails-html-sanitizer (~> 1.0, >= 1.2.0)
-    actiontext (7.1.0.alpha)
-      actionpack (= 7.1.0.alpha)
-      activerecord (= 7.1.0.alpha)
-      activestorage (= 7.1.0.alpha)
-      activesupport (= 7.1.0.alpha)
-      globalid (>= 0.6.0)
-      nokogiri (>= 1.8.5)
-    actionview (7.1.0.alpha)
-      activesupport (= 7.1.0.alpha)
-      builder (~> 3.1)
-      erubi (~> 1.11)
-      rails-dom-testing (~> 2.0)
-      rails-html-sanitizer (~> 1.1, >= 1.2.0)
-    activejob (7.1.0.alpha)
-      activesupport (= 7.1.0.alpha)
-      globalid (>= 0.3.6)
-    activemodel (7.1.0.alpha)
-      activesupport (= 7.1.0.alpha)
-    activerecord (7.1.0.alpha)
-      activemodel (= 7.1.0.alpha)
-      activesupport (= 7.1.0.alpha)
-    activestorage (7.1.0.alpha)
-      actionpack (= 7.1.0.alpha)
-      activejob (= 7.1.0.alpha)
-      activerecord (= 7.1.0.alpha)
-      activesupport (= 7.1.0.alpha)
-      marcel (~> 1.0)
-      mini_mime (>= 1.1.0)
-    activesupport (7.1.0.alpha)
-      concurrent-ruby (~> 1.0, >= 1.0.2)
-      connection_pool (>= 2.2.5)
-      i18n (>= 1.6, < 2)
-      minitest (>= 5.1)
-      tzinfo (~> 2.0)
-    rails (7.1.0.alpha)
-      actioncable (= 7.1.0.alpha)
-      actionmailbox (= 7.1.0.alpha)
-      actionmailer (= 7.1.0.alpha)
-      actionpack (= 7.1.0.alpha)
-      actiontext (= 7.1.0.alpha)
-      actionview (= 7.1.0.alpha)
-      activejob (= 7.1.0.alpha)
-      activemodel (= 7.1.0.alpha)
-      activerecord (= 7.1.0.alpha)
-      activestorage (= 7.1.0.alpha)
-      activesupport (= 7.1.0.alpha)
-      bundler (>= 1.15.0)
-      railties (= 7.1.0.alpha)
-    railties (7.1.0.alpha)
-      actionpack (= 7.1.0.alpha)
-      activesupport (= 7.1.0.alpha)
-      rake (>= 12.2)
-      thor (~> 1.0)
-      zeitwerk (~> 2.6)
-
 PATH
   remote: ..
   specs:
@@ -101,6 +8,71 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    actioncable (7.0.3.1)
+      actionpack (= 7.0.3.1)
+      activesupport (= 7.0.3.1)
+      nio4r (~> 2.0)
+      websocket-driver (>= 0.6.1)
+    actionmailbox (7.0.3.1)
+      actionpack (= 7.0.3.1)
+      activejob (= 7.0.3.1)
+      activerecord (= 7.0.3.1)
+      activestorage (= 7.0.3.1)
+      activesupport (= 7.0.3.1)
+      mail (>= 2.7.1)
+      net-imap
+      net-pop
+      net-smtp
+    actionmailer (7.0.3.1)
+      actionpack (= 7.0.3.1)
+      actionview (= 7.0.3.1)
+      activejob (= 7.0.3.1)
+      activesupport (= 7.0.3.1)
+      mail (~> 2.5, >= 2.5.4)
+      net-imap
+      net-pop
+      net-smtp
+      rails-dom-testing (~> 2.0)
+    actionpack (7.0.3.1)
+      actionview (= 7.0.3.1)
+      activesupport (= 7.0.3.1)
+      rack (~> 2.0, >= 2.2.0)
+      rack-test (>= 0.6.3)
+      rails-dom-testing (~> 2.0)
+      rails-html-sanitizer (~> 1.0, >= 1.2.0)
+    actiontext (7.0.3.1)
+      actionpack (= 7.0.3.1)
+      activerecord (= 7.0.3.1)
+      activestorage (= 7.0.3.1)
+      activesupport (= 7.0.3.1)
+      globalid (>= 0.6.0)
+      nokogiri (>= 1.8.5)
+    actionview (7.0.3.1)
+      activesupport (= 7.0.3.1)
+      builder (~> 3.1)
+      erubi (~> 1.4)
+      rails-dom-testing (~> 2.0)
+      rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    activejob (7.0.3.1)
+      activesupport (= 7.0.3.1)
+      globalid (>= 0.3.6)
+    activemodel (7.0.3.1)
+      activesupport (= 7.0.3.1)
+    activerecord (7.0.3.1)
+      activemodel (= 7.0.3.1)
+      activesupport (= 7.0.3.1)
+    activestorage (7.0.3.1)
+      actionpack (= 7.0.3.1)
+      activejob (= 7.0.3.1)
+      activerecord (= 7.0.3.1)
+      activesupport (= 7.0.3.1)
+      marcel (~> 1.0)
+      mini_mime (>= 1.1.0)
+    activesupport (7.0.3.1)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      tzinfo (~> 2.0)
     appraisal (2.4.1)
       bundler
       rake
@@ -108,7 +80,6 @@ GEM
     ast (2.4.2)
     builder (3.2.4)
     concurrent-ruby (1.1.10)
-    connection_pool (2.2.5)
     crass (1.0.6)
     digest (3.1.0)
     erubi (1.11.0)
@@ -124,8 +95,8 @@ GEM
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     marcel (1.0.2)
+    method_source (1.0.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.0)
     minitest (5.16.3)
     net-imap (0.2.3)
       digest
@@ -142,12 +113,7 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.8)
-      mini_portile2 (~> 2.8.0)
-      racc (~> 1.4)
     nokogiri (1.13.8-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.13.8-x86_64-linux)
       racc (~> 1.4)
     parallel (1.22.1)
     parser (3.1.2.1)
@@ -156,11 +122,32 @@ GEM
     rack (2.2.4)
     rack-test (2.0.2)
       rack (>= 1.3)
+    rails (7.0.3.1)
+      actioncable (= 7.0.3.1)
+      actionmailbox (= 7.0.3.1)
+      actionmailer (= 7.0.3.1)
+      actionpack (= 7.0.3.1)
+      actiontext (= 7.0.3.1)
+      actionview (= 7.0.3.1)
+      activejob (= 7.0.3.1)
+      activemodel (= 7.0.3.1)
+      activerecord (= 7.0.3.1)
+      activestorage (= 7.0.3.1)
+      activesupport (= 7.0.3.1)
+      bundler (>= 1.15.0)
+      railties (= 7.0.3.1)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.4.3)
       loofah (~> 2.3)
+    railties (7.0.3.1)
+      actionpack (= 7.0.3.1)
+      activesupport (= 7.0.3.1)
+      method_source
+      rake (>= 12.2)
+      thor (~> 1.0)
+      zeitwerk (~> 2.5)
     rainbow (3.1.1)
     rake (13.0.6)
     regexp_parser (2.5.0)
@@ -199,14 +186,12 @@ GEM
     zeitwerk (2.6.0)
 
 PLATFORMS
-  ruby
-  x86_64-darwin-20
-  x86_64-linux
+  x86_64-darwin-21
 
 DEPENDENCIES
   appraisal
   prefixed_ids!
-  rails!
+  rails (~> 7.0.0)
   sqlite3
   standardrb
 
