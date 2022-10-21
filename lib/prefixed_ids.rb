@@ -11,6 +11,7 @@ module PrefixedIds
   mattr_accessor :delimiter, default: "_"
   mattr_accessor :alphabet, default: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
   mattr_accessor :minimum_length, default: 24
+  mattr_accessor :salt, default: ""
 
   mattr_accessor :models, default: {}
 

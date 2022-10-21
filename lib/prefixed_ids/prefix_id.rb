@@ -4,10 +4,10 @@ module PrefixedIds
 
     TOKEN = 123
 
-    def initialize(model, prefix, minimum_length: PrefixedIds.minimum_length, alphabet: PrefixedIds.alphabet, delimiter: PrefixedIds.delimiter, **options)
+    def initialize(model, prefix, salt: PrefixedIds.salt, minimum_length: PrefixedIds.minimum_length, alphabet: PrefixedIds.alphabet, delimiter: PrefixedIds.delimiter, **options)
       @prefix = prefix.to_s
       @delimiter = delimiter.to_s
-      @hashids = Hashids.new(model.table_name, minimum_length, alphabet)
+      @hashids = Hashids.new("#{model.table_name}#{salt}", minimum_length, alphabet)
     end
 
     def encode(id)
