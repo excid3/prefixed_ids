@@ -34,13 +34,21 @@ end
 
 This will generate a value like `user_1234abcd`.
 
+##### Prefix ID Param
+
 To retrieve the prefix ID, simply call:
 
 ```ruby
 User.to_param
 ```
 
-Or `User.prefix_id` if to_param override is disabled.
+If `to_param` override is disabled:
+
+```ruby
+User.prefix_id
+```
+
+##### Query by Prefixed ID
 
 To query using the prefixed ID, you can use either `find` or `find_by_prefix_id`:
 
@@ -59,7 +67,26 @@ class User < ApplicationRecord
 end
 ```
 
-### Generic lookup
+##### Salt
+
+A salt is a secret value that makes it impossible to reverse engineer IDs. We recommend adding a salt to make your Prefix IDs unguessable.
+
+###### Global Salt
+
+```ruby
+# config/initializers/prefixed_ids.rb
+PrefixID.salt = "salt"
+```
+
+###### Per Model Salt
+
+```ruby
+class User
+  has_prefix_id :user, salt: "usersalt"
+end
+```
+
+### Generic Lookup By Prefix ID
 
 Imagine you have a prefixed ID but you don't know which model it belongs to.
 
@@ -70,13 +97,13 @@ PrefixedIds.find("acct_2iAnOP0xGDYk6dpe")
 #=> #<Account>
 ```
 
-### Customizing
+### Customizing Prefix IDs
 
 You can customize the prefix, length, and attribute name for PrefixedIds.
 
 ```ruby
 class Account < ApplicationRecord
-  has_prefix_id :acct, minimum_length: 32, override_find: false, to_param: false
+  has_prefix_id :acct, minimum_length: 32, override_find: false, to_param: false, salt: ""
 end
 ```
 

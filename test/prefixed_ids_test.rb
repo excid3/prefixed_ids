@@ -133,4 +133,8 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     post = user.posts.first
     assert_equal post, user.posts.find(post.to_param)
   end
+
+  test "can override salt on model" do
+    assert_equal "accountsabcd", Account._prefix_id.hashids.salt
+  end
 end
