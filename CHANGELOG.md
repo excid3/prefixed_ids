@@ -1,5 +1,9 @@
 ### Unreleased
 
+### 1.3.0
+
+* Add `PrefixedIds.salt` and `has_prefix_id salt: ""` option - @domchristie
+
 ### 1.2.2
 
 * [FIX] Override find method on ActiveRecord::Relation - @excid3
