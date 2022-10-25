@@ -13,6 +13,10 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     assert_equal 24, PrefixedIds.minimum_length
   end
 
+  test "default salt" do
+    assert_equal "", PrefixedIds.salt
+  end
+
   test "has a prefix ID" do
     prefix_id = users(:one).prefix_id
     assert_not_nil prefix_id
@@ -80,10 +84,21 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     assert_equal default_encoder.decode(default), custom_encoder.decode(custom)
   end
 
-  test "can change the default delimiter delimiter" do
+  test "can change the default delimiter" do
     slash = PrefixedIds::PrefixId.new(User, "user", delimiter: "/")
 
     assert slash.encode(1).start_with?("user/")
+  end
+
+  test "can use a custom salt" do
+    default_encoder = PrefixedIds::PrefixId.new(User, "user")
+    custom_encoder = PrefixedIds::PrefixId.new(User, "user", salt: "truffle")
+
+    default = default_encoder.encode(1)
+    custom = custom_encoder.encode(1)
+
+    assert_not_equal default, custom
+    assert_equal default_encoder.decode(default), custom_encoder.decode(custom)
   end
 
   test "checks for a valid id upon decoding" do
