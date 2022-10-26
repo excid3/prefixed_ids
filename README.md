@@ -75,7 +75,7 @@ A salt is a secret value that makes it impossible to reverse engineer IDs. We re
 
 ```ruby
 # config/initializers/prefixed_ids.rb
-PrefixID.salt = "salt"
+PrefixedIds.salt = "salt"
 ```
 
 ###### Per Model Salt
