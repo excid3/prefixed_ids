@@ -103,7 +103,7 @@ You can customize the prefix, length, and attribute name for PrefixedIds.
 
 ```ruby
 class Account < ApplicationRecord
-  has_prefix_id :acct, minimum_length: 32, override_find: false, to_param: false, salt: ""
+  has_prefix_id :acct, minimum_length: 32, override_find: false, override_param: false, salt: ""
 end
 ```
 
