@@ -52,12 +52,15 @@ User.prefix_id
 
 ##### Query by Prefixed ID
 
-To query using the prefixed ID, you can use either `find` or `find_by_prefix_id`:
+To query using the prefixed ID, you can use either `find`, `find_by_prefix_id`, or `find_by_prefix_id!`:
 
 ```ruby
 User.find("user_5vJjbzXq9KrLEMm32iAnOP0xGDYk6dpe")
 User.find_by_prefix_id("user_5vJjbzXq9KrLEMm32iAnOP0xGDYk6dpe")
 ```
+
+⚠️ Note that `find` still finds records by the primary key. Eg. `localhost/users/1` still works. 
+If you're targeting security issues by masking the ID, make sure to use `find_by_prefix_id` and [add a salt](#salt).
 
 We also override `to_param` by default so it'll be used in URLs automatically.
 
