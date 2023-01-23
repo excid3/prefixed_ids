@@ -13,6 +13,8 @@ user_12345abcd
 acct_23lksjdg3
 ```
 
+This gem works by hashing the record's original `:id` attribute using [`Hashids`](https://hashids.org/ruby/), which transforms numbers like 347 into a string like yr8. It uses the table's name and an optional additional salt to hash values, returning a string like `tablename_hashedvalue`.
+
 Inspired by [Stripe's prefixed IDs](https://stripe.com/docs/api) in their API.
 
 ## 🚀 Installation
