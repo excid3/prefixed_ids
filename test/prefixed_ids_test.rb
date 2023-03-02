@@ -17,6 +17,10 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     assert_equal "", PrefixedIds.salt
   end
 
+  test "can get original ID from prefix ID" do
+    assert_equal users(:one).id, User.unprefix_id(users(:one).prefix_id)
+  end
+
   test "has a prefix ID" do
     prefix_id = users(:one).prefix_id
     assert_not_nil prefix_id
