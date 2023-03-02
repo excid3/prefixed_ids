@@ -62,7 +62,7 @@ module PrefixedIds
         find_by!(id: _prefix_id.decode(id))
       end
 
-      def unprefix_id(id)
+      def decode_prefix_id(id)
         _prefix_id.decode(id)
       end
     end
