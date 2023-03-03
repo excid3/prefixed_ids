@@ -1,5 +1,7 @@
 ### Unreleased
 
+### 1.4.0
+
 * Add `decode_prefix_id` and `decode_prefix_ids` class methods - @TastyPi
 
 ### 1.3.0
