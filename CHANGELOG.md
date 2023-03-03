@@ -1,5 +1,7 @@
 ### Unreleased
 
+* Add `decode_prefix_id` and `decode_prefix_ids` class methods - @TastyPi
+
 ### 1.3.0
 
 * Add `PrefixedIds.salt` and `has_prefix_id salt: ""` option - @domchristie

@@ -21,6 +21,13 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     assert_equal users(:one).id, User.decode_prefix_id(users(:one).prefix_id)
   end
 
+  test "can get original IDs from multiple prefix IDs" do
+    assert_equal(
+      [users(:one).id, users(:two).id, users(:three).id],
+      User.decode_prefix_ids([users(:one).prefix_id, users(:two).prefix_id, users(:three).prefix_id])
+    )
+  end
+
   test "has a prefix ID" do
     prefix_id = users(:one).prefix_id
     assert_not_nil prefix_id
