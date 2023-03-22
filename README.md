@@ -59,7 +59,7 @@ User.find("user_5vJjbzXq9KrLEMm32iAnOP0xGDYk6dpe")
 User.find_by_prefix_id("user_5vJjbzXq9KrLEMm32iAnOP0xGDYk6dpe")
 ```
 
-⚠️ Note that `find` still finds records by the primary key. Eg. `localhost/users/1` still works. 
+⚠️ Note that `find` still finds records by the primary key. Eg. `localhost/users/1` still works.
 If you're targeting security issues by masking the ID, make sure to use `find_by_prefix_id` and [add a salt](#salt).
 
 We also override `to_param` by default so it'll be used in URLs automatically.
@@ -108,9 +108,11 @@ You can customize the prefix, length, and attribute name for PrefixedIds.
 
 ```ruby
 class Account < ApplicationRecord
-  has_prefix_id :acct, minimum_length: 32, override_find: false, override_param: false, salt: ""
+  has_prefix_id :acct, minimum_length: 32, override_find: false, override_param: false, salt: "", fallback: false
 end
 ```
+
+By default, `find` will accept both Prefix IDs and regular IDs. Setting `fallback: false` will disable finding by regular IDs and will only allow Prefix IDs.
 
 ## Development
 

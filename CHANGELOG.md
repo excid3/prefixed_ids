@@ -1,5 +1,9 @@
 ### Unreleased
 
+### 1.5.0
+
+* Add `has_prefix_id fallback: false` option to disable lookup by regular ID - @excid3
+
 ### 1.4.0
 
 * Add `decode_prefix_id` and `decode_prefix_ids` class methods - @TastyPi

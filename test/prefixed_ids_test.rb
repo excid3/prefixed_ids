@@ -148,4 +148,19 @@ class PrefixedIdsTest < ActiveSupport::TestCase
   test "can override salt on model" do
     assert_equal "accountsabcd", Account._prefix_id.hashids.salt
   end
+
+  test "decode with fallback false returns nil for regular ID" do
+    assert_nil Team._prefix_id.decode(1)
+  end
+
+  test "disabled fallback allows find by prefix id" do
+    team = Team.find_by(id: ActiveRecord::FixtureSet.identify(:one))
+    assert_equal team, Team.find(team.prefix_id)
+  end
+
+  test "disabled fallback raises an error if not prefix_id" do
+    assert_raises PrefixedIds::Error do
+      Team.find(ActiveRecord::FixtureSet.identify(:one))
+    end
+  end
 end

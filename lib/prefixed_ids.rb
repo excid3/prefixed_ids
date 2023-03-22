@@ -34,14 +34,16 @@ module PrefixedIds
 
     included do
       class_attribute :_prefix_id
+      class_attribute :_prefix_id_fallback
     end
 
     class_methods do
-      def has_prefix_id(prefix, override_find: true, override_param: true, **options)
+      def has_prefix_id(prefix, override_find: true, override_param: true, fallback: true, **options)
         include Attribute
         include Finder if override_find
         include ToParam if override_param
         self._prefix_id = PrefixId.new(self, prefix, **options)
+        self._prefix_id_fallback = fallback
 
         # Register with PrefixedIds to support PrefixedIds#find
         PrefixedIds.models[prefix.to_s] = self
@@ -72,7 +74,7 @@ module PrefixedIds
     end
 
     def prefix_id
-      self.class._prefix_id.encode(id)
+      _prefix_id.encode(id)
     end
   end
 
@@ -81,7 +83,12 @@ module PrefixedIds
 
     class_methods do
       def find(*ids)
-        super(*ids.map { |id| _prefix_id.decode(id, fallback: true) })
+        prefix_ids = *ids.map do |id|
+          prefix_id = _prefix_id.decode(id, fallback: _prefix_id_fallback)
+          raise Error, "#{id} is not a valid prefix_id" if !_prefix_id_fallback && prefix_id.nil?
+          prefix_id
+        end
+        super(*prefix_ids)
       end
 
       def relation
