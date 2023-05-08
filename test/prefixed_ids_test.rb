@@ -163,4 +163,12 @@ class PrefixedIdsTest < ActiveSupport::TestCase
       Team.find(ActiveRecord::FixtureSet.identify(:one))
     end
   end
+
+  test "calling find on an associated model without prefix id succeeds" do
+    nonprefixed_item = nonprefixed_items(:one)
+    user = users(:one)
+
+    assert_equal user.nonprefixed_items.find(nonprefixed_item.id), nonprefixed_item
+    assert_raises(ActiveRecord::RecordNotFound) { user.nonprefixed_items.find(9999999) }
+  end
 end
