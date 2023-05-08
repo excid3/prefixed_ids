@@ -1,5 +1,9 @@
 ### Unreleased
 
+### 1.5.1
+
+* [FIX] Fixes an exception that occurs when you invoke find on a non prefixed association of a prefixed_id model. #49 - @MishaConway
+
 ### 1.5.0
 
 * Add `has_prefix_id fallback: false` option to disable lookup by regular ID - @excid3
