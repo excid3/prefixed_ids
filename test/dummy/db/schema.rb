@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2023_05_03_211115) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "no_prefix_id_items", force: :cascade do |t|
+  create_table "nonprefixed_items", force: :cascade do |t|
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

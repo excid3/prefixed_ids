@@ -84,13 +84,12 @@ module PrefixedIds
     class_methods do
       def find(*ids)
         prefix_ids = *ids.map do |id|
-          if _prefix_id
-            prefix_id = _prefix_id.decode(id, fallback: _prefix_id_fallback)
-            raise Error, "#{id} is not a valid prefix_id" if !_prefix_id_fallback && prefix_id.nil?
-            prefix_id
-          else
-            id
-          end
+          # Skip if model doesn't use prefixed ids
+          next id unless _prefix_id.present?
+
+          prefix_id = _prefix_id.decode(id, fallback: _prefix_id_fallback)
+          raise Error, "#{id} is not a valid prefix_id" if !_prefix_id_fallback && prefix_id.nil?
+          prefix_id
         end
         super(*prefix_ids)
       end
