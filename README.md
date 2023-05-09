@@ -36,6 +36,8 @@ end
 
 This will generate a value like `user_1234abcd`.
 
+Note: You should add `has_prefix_id` before associations because it overrides `has_many` to add prefix ID lookups.
+
 ##### Prefix ID Param
 
 To retrieve the prefix ID, simply call:

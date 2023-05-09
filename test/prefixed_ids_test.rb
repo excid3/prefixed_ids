@@ -164,6 +164,11 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     end
   end
 
+  test "find by prefixed ID on association" do
+    account = accounts(:one)
+    assert_equal account, account.user.accounts.find(account.prefix_id)
+  end
+
   test "calling find on an associated model without prefix id succeeds" do
     nonprefixed_item = nonprefixed_items(:one)
     user = users(:one)
