@@ -1,5 +1,7 @@
 ### Unreleased
 
+### 1.6.0
+
 * Add `prefix_id` and `prefix_ids` class methods - @TastyPi
 
 ### 1.5.1
