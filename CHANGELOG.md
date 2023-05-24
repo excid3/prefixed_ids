@@ -1,5 +1,7 @@
 ### Unreleased
 
+* Add `prefix_id` and `prefix_ids` class methods - @TastyPi
+
 ### 1.5.1
 
 * [FIX] Fixes an exception that occurs when you invoke find on a non prefixed association of a prefixed_id model. #49 - @MishaConway

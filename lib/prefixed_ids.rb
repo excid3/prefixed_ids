@@ -64,6 +64,14 @@ module PrefixedIds
         find_by!(id: _prefix_id.decode(id))
       end
 
+      def prefix_id(id)
+        _prefix_id.encode(id)
+      end
+
+      def prefix_ids(ids)
+        ids.map { |id| prefix_id(id) }
+      end
+
       def decode_prefix_id(id)
         _prefix_id.decode(id)
       end
