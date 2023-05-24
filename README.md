@@ -43,13 +43,13 @@ Note: You should add `has_prefix_id` before associations because it overrides `h
 To retrieve the prefix ID, simply call:
 
 ```ruby
-User.to_param
+@user.to_param
 ```
 
 If `to_param` override is disabled:
 
 ```ruby
-User.prefix_id
+@user.prefix_id
 ```
 
 ##### Query by Prefixed ID
