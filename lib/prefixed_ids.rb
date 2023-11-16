@@ -91,7 +91,7 @@ module PrefixedIds
 
     class_methods do
       def find(*ids)
-        prefix_ids = *ids.map do |id|
+        prefix_ids = *ids.flatten.map do |id|
           # Skip if model doesn't use prefixed ids
           next id unless _prefix_id.present?
 
@@ -99,6 +99,7 @@ module PrefixedIds
           raise Error, "#{id} is not a valid prefix_id" if !_prefix_id_fallback && prefix_id.nil?
           prefix_id
         end
+        prefix_ids = [prefix_ids] if ids.first.is_a?(Array)
         super(*prefix_ids)
       end
 
