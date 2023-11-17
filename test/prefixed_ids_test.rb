@@ -65,6 +65,17 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     assert_equal [user, user2], User.find(user.prefix_id, user2.prefix_id)
   end
 
+  test "overridden finders with array args" do
+    user = users(:one)
+    user2 = users(:two)
+    assert_equal [user, user2], User.find([user.prefix_id, user2.prefix_id])
+  end
+
+  test "overridden finders with single array args" do
+    user = users(:one)
+    assert_equal [user], User.find([user.prefix_id])
+  end
+
   test "minimum length" do
     assert_equal 32 + 5, accounts(:one).prefix_id.length
   end
