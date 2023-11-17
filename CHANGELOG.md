@@ -1,5 +1,9 @@
 ### Unreleased
 
+### 1.6.1
+
+* `find` override now handles arrays
+
 ### 1.6.0
 
 * Add `prefix_id` and `prefix_ids` class methods - @TastyPi
