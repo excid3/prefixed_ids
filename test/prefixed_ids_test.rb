@@ -191,6 +191,23 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     assert_equal account, account.user.accounts.find(account.prefix_id)
   end
 
+  test "exists? works with prefixed ID" do
+    account = accounts(:one)
+    assert Account.exists?(account.prefix_id)
+  end
+
+  test "disabled exists? with prefixed ID" do
+    post = posts(:one)
+
+    refute Post.exists?(post.prefix_id)
+  end
+
+  test "exists? works with conditions instead of ID" do
+    account = accounts(:one)
+
+    assert Account.exists?(id: account.id)
+  end
+
   test "calling find on an associated model without prefix id succeeds" do
     nonprefixed_item = nonprefixed_items(:one)
     user = users(:one)

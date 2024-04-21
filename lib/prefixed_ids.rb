@@ -38,10 +38,11 @@ module PrefixedIds
     end
 
     class_methods do
-      def has_prefix_id(prefix, override_find: true, override_param: true, fallback: true, **options)
+      def has_prefix_id(prefix, override_find: true, override_param: true, override_exists: true, fallback: true, **options)
         include Attribute
         include Finder if override_find
         include ToParam if override_param
+        include Exists if override_exists
         self._prefix_id = PrefixId.new(self, prefix, **options)
         self._prefix_id_fallback = fallback
 
@@ -121,6 +122,24 @@ module PrefixedIds
 
     def to_param
       _prefix_id.encode(id)
+    end
+  end
+
+  module Exists
+    extend ActiveSupport::Concern
+
+    class_methods do
+      def exists?(id)
+        return super(id) unless _prefix_id.present?
+
+        # `exists?` also accept conditions (e.g. `exists?(id: 1)`). These include, for example, Hashes and Arrays.
+        # In these cases, we know it can't be a prefixed ID so we just delegate to the original method.
+        return super(id) unless id.is_a?(String)
+
+        prefixed_id = _prefix_id.decode(id)
+
+        super(prefixed_id)
+      end
     end
   end
 end
