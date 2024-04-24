@@ -133,7 +133,7 @@ module PrefixedIds
         if _prefix_id.present? && id.is_a?(String)
           super(_prefix_id.decode(id))
         else
-          super(id)
+          super
         end
       end
     end
