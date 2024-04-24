@@ -104,6 +104,26 @@ PrefixedIds.find("acct_2iAnOP0xGDYk6dpe")
 #=> #<Account>
 ```
 
+### Exists
+
+You can check if a record exists by its prefixed ID:
+
+```ruby
+User.exists?("user_5vJjbzXq9KrLEMm3")
+#=> true
+```
+
+If given anything other than a prefixed ID, or `override_exists` is set to false, it will fall back to its original `exists?` method.
+
+```ruby
+class User < ApplicationRecord
+  has_prefix_id :user, override_exists: false
+end
+
+User.exists?("user_5vJjbzXq9KrLEMm3")
+#=> false
+```
+
 ### Customizing Prefix IDs
 
 You can customize the prefix, length, and attribute name for PrefixedIds.
