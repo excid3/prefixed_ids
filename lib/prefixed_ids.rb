@@ -130,15 +130,10 @@ module PrefixedIds
 
     class_methods do
       def exists?(id)
-        return super(id) unless _prefix_id.present?
-
-        # `exists?` also accept conditions (e.g. `exists?(id: 1)`). These include, for example, Hashes and Arrays.
-        # In these cases, we know it can't be a prefixed ID so we just delegate to the original method.
-        return super(id) unless id.is_a?(String)
-
-        prefixed_id = _prefix_id.decode(id)
-
-        super(prefixed_id)
+        if _prefix_id.present? && id.is_a?(String)
+          super(_prefix_id.decode(id))
+        else
+          super(id)
       end
     end
   end
