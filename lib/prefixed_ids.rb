@@ -134,6 +134,7 @@ module PrefixedIds
           super(_prefix_id.decode(id))
         else
           super(id)
+        end
       end
     end
   end
