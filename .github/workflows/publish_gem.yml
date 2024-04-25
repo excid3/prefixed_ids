@@ -8,7 +8,11 @@ on:
         type: string
 
 jobs:
+  test:
+    uses: sqlite
+
   push:
+    needs: test
     runs-on: ubuntu-latest
 
     permissions:
