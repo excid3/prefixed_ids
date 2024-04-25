@@ -1,5 +1,9 @@
 ### Unreleased
 
+### 1.7.0
+
+* Add `exist?` override #62 @luizkowalski
+
 ### 1.6.1
 
 * `find` override now handles arrays
