@@ -9,7 +9,7 @@ on:
 
 jobs:
   test:
-    uses: sqlite
+    uses: ./.github/actions/ci
 
   push:
     needs: test
