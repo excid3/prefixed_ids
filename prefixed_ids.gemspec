@@ -18,7 +18,4 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", ">= 6.0.0"
   spec.add_dependency "hashids", ">= 1.0.0", "< 2.0.0"
-
-  spec.add_development_dependency "standard"
-  spec.add_development_dependency "appraisal"
 end

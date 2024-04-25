@@ -118,6 +118,7 @@ GEM
       net-smtp
     marcel (1.0.4)
     mini_mime (1.1.5)
+    mini_portile2 (2.8.5)
     minitest (5.22.3)
     mutex_m (0.2.0)
     net-imap (0.4.10)
@@ -205,9 +206,8 @@ GEM
       rubocop (>= 1.48.1, < 2.0)
       rubocop-ast (>= 1.30.0, < 2.0)
     ruby-progressbar (1.13.0)
-    sqlite3 (2.0.1-arm64-darwin)
-    sqlite3 (2.0.1-x86_64-darwin)
-    sqlite3 (2.0.1-x86_64-linux-gnu)
+    sqlite3 (1.6.9)
+      mini_portile2 (~> 2.8.0)
     standard (1.35.1)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
@@ -243,7 +243,7 @@ DEPENDENCIES
   appraisal
   prefixed_ids!
   rails (~> 7.1.0)
-  sqlite3
+  sqlite3 (~> 1.4)
   standard
 
 BUNDLED WITH

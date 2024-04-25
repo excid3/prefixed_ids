@@ -2,10 +2,9 @@
 
 source "https://rubygems.org"
 
+gem "sqlite3", "~> 2.0"
+gem "standard"
+gem "appraisal"
 gem "rails", branch: "main", git: "https://github.com/rails/rails.git"
-
-group :development do
-  gem "sqlite3"
-end
 
 gemspec path: "../"
