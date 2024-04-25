@@ -9,7 +9,7 @@ on:
 
 jobs:
   test:
-    uses: ./.github/actions/ci
+    uses: ./.github/actions/ci.yml
 
   push:
     needs: test
