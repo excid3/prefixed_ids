@@ -215,4 +215,8 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     assert_equal user.nonprefixed_items.find(nonprefixed_item.id), nonprefixed_item
     assert_raises(ActiveRecord::RecordNotFound) { user.nonprefixed_items.find(9999999) }
   end
+
+  test "calling to_param on non-persisted record" do
+    assert_nil Post.new.to_param
+  end
 end
