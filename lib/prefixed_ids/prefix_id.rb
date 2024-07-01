@@ -12,7 +12,7 @@ module PrefixedIds
 
     def encode(id)
       return if id.nil?
-      
+
       @prefix + @delimiter + @hashids.encode(TOKEN, id)
     end
 
