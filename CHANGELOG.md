@@ -1,5 +1,9 @@
 ### Unreleased
 
+### 1.7.1
+
+* Safely handle `to_param` for new records #69
+
 ### 1.7.0
 
 * Add `exist?` override #62 @luizkowalski
