@@ -219,4 +219,11 @@ class PrefixedIdsTest < ActiveSupport::TestCase
   test "calling to_param on non-persisted record" do
     assert_nil Post.new.to_param
   end
+
+
+
+  test "compound primary - can get prefix ID from original ID" do
+    assert_equal compound_primary_items(:one).prefix_id, CompoundPrimaryItem.prefix_id(compound_primary_items(:one).id)
+  end
+
 end
