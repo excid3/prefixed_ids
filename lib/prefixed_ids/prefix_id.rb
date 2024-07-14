@@ -14,7 +14,7 @@ module PrefixedIds
       return if id.nil?
 
       args = [TOKEN]
-      args += id.kind_of?(Array) ? id : [id]
+      args += id.is_a?(Array) ? id : [id]
 
       @prefix + @delimiter + @hashids.encode(args)
     end
