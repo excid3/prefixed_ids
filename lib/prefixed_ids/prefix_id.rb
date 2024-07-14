@@ -27,8 +27,9 @@ module PrefixedIds
       if fallback && !valid?(decoded_hashid)
         fallback_value
       else
-        token = decoded_hashid.shift
-        decoded_hashid
+        _ = decoded_hashid.shift
+
+        decoded_hashid = decoded_hashid.first if decoded_hashid.size == 1
       end
     end
 
