@@ -223,7 +223,23 @@ class PrefixedIdsTest < ActiveSupport::TestCase
 
 
   test "compound primary - can get prefix ID from original ID" do
+    assert compound_primary_items(:one).id.kind_of?(Array)
     assert_equal compound_primary_items(:one).prefix_id, CompoundPrimaryItem.prefix_id(compound_primary_items(:one).id)
+  end
+
+  test "compound primary - checks for a valid id upon decoding" do
+    prefix = PrefixedIds::PrefixId.new(CompoundPrimaryItem, "compound")
+    hashid = Hashids.new(User.table_name, PrefixedIds.minimum_length, PrefixedIds.alphabet)
+
+    first = prefix.encode([1,1])
+    second = hashid.encode([2,1])
+
+    assert_not_equal first.delete_prefix("compound" + PrefixedIds.delimiter), second
+    assert_equal prefix.decode(second, fallback: true), second
+
+    decoded = hashid.decode(second)
+    assert_equal decoded.size, 2
+    assert_equal decoded, [2,1]
   end
 
 end
