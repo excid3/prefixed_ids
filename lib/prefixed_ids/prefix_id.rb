@@ -27,13 +27,8 @@ module PrefixedIds
       elsif !valid?(decoded_hashid)
         nil
       else
-        _ = decoded_hashid.shift
-
-        if decoded_hashid.size == 1
-          decoded_hashid.first
-        else
-          decoded_hashid
-        end
+        _, id, *composite = decoded_hashid
+        composite.empty? ? id : composite
       end
     end
 
