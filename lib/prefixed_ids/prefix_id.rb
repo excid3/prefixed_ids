@@ -22,10 +22,8 @@ module PrefixedIds
       _, id_without_prefix = PrefixedIds.split_id(id, @delimiter)
       decoded_hashid = @hashids.decode(id_without_prefix)
 
-      if fallback && !valid?(decoded_hashid)
+      if !valid?(decoded_hashid)
         fallback_value
-      elsif !valid?(decoded_hashid)
-        nil
       else
         _, id, *composite = decoded_hashid
         composite.empty? ? id : composite
