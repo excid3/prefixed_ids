@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/rails.git
-  revision: d43ee2088118425e493766aeb20575e9ce7159d1
+  revision: 099776069c4be64be8be7e3fdb0232d7824a38a9
   branch: main
   specs:
     actioncable (8.0.0.alpha)
@@ -98,7 +98,7 @@ GIT
 PATH
   remote: ..
   specs:
-    prefixed_ids (1.7.1)
+    prefixed_ids (1.8.0)
       hashids (>= 1.0.0, < 2.0.0)
       rails (>= 6.0.0)
 
@@ -125,7 +125,7 @@ GEM
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     io-console (0.7.2)
-    irb (1.13.2)
+    irb (1.14.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     json (2.7.2)
@@ -162,13 +162,13 @@ GEM
     nokogiri (1.16.6-x86_64-linux)
       racc (~> 1.4)
     parallel (1.25.1)
-    parser (3.3.3.0)
+    parser (3.3.4.0)
       ast (~> 2.4.1)
       racc
     psych (5.1.2)
       stringio
     racc (1.8.0)
-    rack (3.1.4)
+    rack (3.1.7)
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rack-test (2.1.0)
@@ -213,7 +213,7 @@ GEM
       mini_portile2 (~> 2.8.0)
     sqlite3 (2.0.2-x86_64-darwin)
     sqlite3 (2.0.2-x86_64-linux-gnu)
-    standard (1.39.0)
+    standard (1.39.1)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
       rubocop (~> 1.64.0)
