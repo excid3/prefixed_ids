@@ -22,12 +22,19 @@ module PrefixedIds
       fallback_value = fallback ? id : nil
       _, id_without_prefix = PrefixedIds.split_id(id, @delimiter)
       decoded_hashid = @hashids.decode(id_without_prefix)
+
       if fallback && !valid?(decoded_hashid)
         fallback_value
+      elsif !valid?(decoded_hashid)
+        nil
       else
         _ = decoded_hashid.shift
 
-        decoded_hashid = decoded_hashid.first if decoded_hashid.size == 1
+        if decoded_hashid.size == 1
+          decoded_hashid.first
+        else
+          decoded_hashid
+        end
       end
     end
 
