@@ -13,9 +13,7 @@ module PrefixedIds
     def encode(id)
       return if id.nil?
 
-      args = [TOKEN]
-      args += id.is_a?(Array) ? id : [id]
-
+      args = [TOKEN] + Array.wrap(id)
       @prefix + @delimiter + @hashids.encode(args)
     end
 
