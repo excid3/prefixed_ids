@@ -13,7 +13,7 @@ module PrefixedIds
     def encode(id)
       return if id.nil?
 
-      @prefix + @delimiter + @hashids.encode(TOKEN, id)
+      @prefix + @delimiter + @hashids.encode([TOKEN] + Array.wrap(id))
     end
 
     # decode returns an array
@@ -21,17 +21,19 @@ module PrefixedIds
       fallback_value = fallback ? id : nil
       _, id_without_prefix = PrefixedIds.split_id(id, @delimiter)
       decoded_hashid = @hashids.decode(id_without_prefix)
-      if fallback && !valid?(decoded_hashid)
+
+      if !valid?(decoded_hashid)
         fallback_value
       else
-        decoded_hashid.last
+        _, id, *composite = decoded_hashid
+        composite.empty? ? id : composite
       end
     end
 
     private
 
     def valid?(decoded_hashid)
-      decoded_hashid.size == 2 && decoded_hashid.first == TOKEN
+      decoded_hashid.size >= 2 && decoded_hashid.first == TOKEN
     end
   end
 end
