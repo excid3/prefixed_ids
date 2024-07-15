@@ -1,5 +1,7 @@
 ### Unreleased
 
+* Add composite key support #70
+
 ### 1.7.1
 
 * Safely handle `to_param` for new records #69
