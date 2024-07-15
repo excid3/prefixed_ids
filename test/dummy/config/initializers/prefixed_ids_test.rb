@@ -13,7 +13,7 @@ module PrefixedIds
     end
 
     def self.rails70?
-      ::Rails.version.start_with? '7.0'
+      ::Rails.version.start_with? "7.0"
     end
   end
 end
