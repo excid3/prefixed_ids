@@ -1,5 +1,9 @@
 ### Unreleased
 
+* Ensure that decode returns all parts of composite key
+
+### 1.8.0
+
 * Add composite key support #70
 
 ### 1.7.1
