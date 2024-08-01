@@ -26,7 +26,7 @@ module PrefixedIds
         fallback_value
       else
         _, *ids = decoded_hashid
-        ids.size == 1 ? ids.first : ids
+        (ids.size == 1) ? ids.first : ids
       end
     end
 
