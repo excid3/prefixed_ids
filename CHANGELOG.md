@@ -1,5 +1,7 @@
 ### Unreleased
 
+### 1.8.1
+
 * Ensure that decode returns all parts of composite key
 
 ### 1.8.0
