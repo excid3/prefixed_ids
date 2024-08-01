@@ -25,8 +25,8 @@ module PrefixedIds
       if !valid?(decoded_hashid)
         fallback_value
       else
-        _, id, *composite = decoded_hashid
-        composite.empty? ? id : composite
+        _, *ids = decoded_hashid
+        (ids.size == 1) ? ids.first : ids
       end
     end
 

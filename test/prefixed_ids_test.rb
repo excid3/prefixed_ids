@@ -239,6 +239,9 @@ class PrefixedIdsTest < ActiveSupport::TestCase
       decoded = hashid.decode(second)
       assert_equal decoded.size, 2
       assert_equal decoded, [1, 1]
+
+      prefix_decoded = prefix.decode(first)
+      assert_equal prefix_decoded, [1, 1]
     end
   end
 end
