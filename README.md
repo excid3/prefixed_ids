@@ -35,9 +35,8 @@ class User < ApplicationRecord
 end
 ```
 
-This will generate a value like `user_1234abcd`.
-
-Note: You should add `has_prefix_id` before associations because it overrides `has_many` to add prefix ID lookups.
+> [!NOTE]
+> Add `has_prefix_id` _before_ associations because it overrides `has_many` to include prefix ID helpers.
 
 ##### Prefix ID Param
 
@@ -45,33 +44,36 @@ To retrieve the prefix ID, simply call:
 
 ```ruby
 @user.to_param
+#=> "user_12345abcd"
 ```
 
 If `to_param` override is disabled:
 
 ```ruby
 @user.prefix_id
+#=> "user_12345abcd"
 ```
 
 ##### Query by Prefixed ID
 
-To query using the prefixed ID, you can use either `find`, `find_by_prefix_id`, or `find_by_prefix_id!`:
-
-```ruby
-User.find_by_prefix_id("user_5vJjbzXq9KrLEMm32iAnOP0xGDYk6dpe")
-```
-
-> [!NOTE]
-> `find` still finds records by primary key. For example, `User.find(1)` still works.
-
 By default, prefixed_ids overrids `find` and `to_param` to seamlessly URLs automatically.
 
-```
+```ruby
 User.first.to_param
 #=> "user_5vJjbzXq9KrLEMm32iAnOP0xGDYk6dpe"
 
 User.find("user_5vJjbzXq9KrLEMm32iAnOP0xGDYk6dpe")
 #=> #<User>
+```
+
+> [!NOTE]
+> `find` still finds records by primary key. For example, `User.find(1)` still works.
+
+You can also use `find_by_prefix_id` or `find_by_prefix_id!` when the `find` override is disabled:
+
+```ruby
+User.find_by_prefix_id("user_5vJjbzXq9KrLEMm32iAnOP0xGDYk6dpe") # Returns a User or nil
+User.find_by_prefix_id!("user_5vJjbzXq9KrLEMm32iAnOP0xGDYk6dpe") # Raises an exception if not found
 ```
 
 To disable `find` and `to_param` overrides, pass the following options:
