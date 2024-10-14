@@ -18,6 +18,7 @@ This gem works by hashing the record's original `:id` attribute using [`Hashids`
 Inspired by [Stripe's prefixed IDs](https://stripe.com/docs/api) in their API.
 
 ## 🚀 Installation
+
 Add this line to your application's Gemfile:
 
 ```ruby
@@ -57,22 +58,32 @@ If `to_param` override is disabled:
 To query using the prefixed ID, you can use either `find`, `find_by_prefix_id`, or `find_by_prefix_id!`:
 
 ```ruby
-User.find("user_5vJjbzXq9KrLEMm32iAnOP0xGDYk6dpe")
 User.find_by_prefix_id("user_5vJjbzXq9KrLEMm32iAnOP0xGDYk6dpe")
 ```
 
-⚠️ Note that `find` still finds records by the primary key. Eg. `localhost/users/1` still works.
-If you're targeting security issues by masking the ID, make sure to use `find_by_prefix_id` and [add a salt](#salt).
+> [!NOTE]
+> `find` still finds records by primary key. For example, `User.find(1)` still works.
 
-We also override `to_param` by default so it'll be used in URLs automatically.
+By default, prefixed_ids overrids `find` and `to_param` to seamlessly URLs automatically.
 
-To disable find and to_param overrides, simply pass in the options:
+```
+User.first.to_param
+#=> "user_5vJjbzXq9KrLEMm32iAnOP0xGDYk6dpe"
+
+User.find("user_5vJjbzXq9KrLEMm32iAnOP0xGDYk6dpe")
+#=> #<User>
+```
+
+To disable `find` and `to_param` overrides, pass the following options:
 
 ```ruby
 class User < ApplicationRecord
   has_prefix_id :user, override_find: false, override_param: false
 end
 ```
+
+> [!NOTE]
+> If you're aiming to masking primary key ID for security reasons, make sure to use `find_by_prefix_id` and [add a salt](#salt).
 
 ##### Salt
 
@@ -93,36 +104,19 @@ class User
 end
 ```
 
-### Generic Lookup By Prefix ID
+### Find Any Model By Prefix ID
 
-Imagine you have a prefixed ID but you don't know which model it belongs to.
+Imagine you have a prefixed ID but you don't know which model it belongs to:
 
 ```ruby
 PrefixedIds.find("user_5vJjbzXq9KrLEMm3")
 #=> #<User>
+
 PrefixedIds.find("acct_2iAnOP0xGDYk6dpe")
 #=> #<Account>
 ```
 
-### Exists
-
-You can check if a record exists by its prefixed ID:
-
-```ruby
-User.exists?("user_5vJjbzXq9KrLEMm3")
-#=> true
-```
-
-If given anything other than a prefixed ID, or `override_exists` is set to false, it will fall back to its original `exists?` method.
-
-```ruby
-class User < ApplicationRecord
-  has_prefix_id :user, override_exists: false
-end
-
-User.exists?("user_5vJjbzXq9KrLEMm3")
-#=> false
-```
+This works similarly to GlobalIDs.
 
 ### Customizing Prefix IDs
 
