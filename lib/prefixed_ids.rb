@@ -135,7 +135,7 @@ module PrefixedIds
         if id_or_conditions.is_a?(Hash)
           id = id_or_conditions.delete(:id)
           super(id_or_conditions.merge(id: _prefix_id.decode(id, fallback: _prefix_id_fallback)))
-        else if id_or_conditions.is_a?(Array)
+        elsif id_or_conditions.is_a?(Array)
           raise "exists? does not support arrays of conditions for prefixed ids"
         else
           super(_prefix_id.decode(id_or_conditions, fallback: _prefix_id_fallback))
