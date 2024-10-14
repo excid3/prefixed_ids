@@ -38,9 +38,11 @@ end
 > [!NOTE]
 > Add `has_prefix_id` _before_ associations because it overrides `has_many` to include prefix ID helpers.
 
-##### Prefix ID Param
+### Prefix ID Param
 
-To retrieve the prefix ID, simply call:
+By default, Prefixed IDs overrides `to_param` in the model to use prefix IDs.
+
+To get the prefix ID for a record:
 
 ```ruby
 @user.to_param
