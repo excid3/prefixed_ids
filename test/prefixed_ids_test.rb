@@ -211,8 +211,11 @@ class PrefixedIdsTest < ActiveSupport::TestCase
 
   test "exists? works with conditions instead of ID" do
     account = accounts(:one)
+    account_two = accounts(:two)
 
     assert Account.exists?(id: account.id)
+    assert Account.exists?(id: [account.prefix_id, account_two.prefix_id])
+    assert Account.exists?(id: [account.prefix_id, account_two.prefix_id, 999_999])
   end
 
   test "exists? works correctly with multiple conditions" do

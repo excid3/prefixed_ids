@@ -134,9 +134,18 @@ module PrefixedIds
 
         if id_or_conditions.is_a?(Hash)
           id = id_or_conditions.delete(:id)
-          super(id_or_conditions.merge(id: _prefix_id.decode(id, fallback: _prefix_id_fallback)))
+          if id.is_a?(Array)
+            prefix_ids = id.flatten.map do |i|
+              prefix_id = _prefix_id.decode(i, fallback: _prefix_id_fallback)
+              raise Error, "#{i} is not a valid prefix_id" if !_prefix_id_fallback && prefix_id.nil?
+              prefix_id
+            end
+            super(id_or_conditions.merge(id: prefix_ids))
+          else
+            super(id_or_conditions.merge(id: _prefix_id.decode(id, fallback: _prefix_id_fallback)))
+          end
         elsif id_or_conditions.is_a?(Array)
-          raise "exists? does not support arrays of conditions for prefixed ids"
+          raise Error, "exists? does not support arrays of conditions for prefixed ids"
         else
           super(_prefix_id.decode(id_or_conditions, fallback: _prefix_id_fallback))
         end
