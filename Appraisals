@@ -18,6 +18,11 @@ appraise "rails-7-1" do
   gem "sqlite3", "~> 1.4"
 end
 
+appraise "rails-8-0" do
+  gem "rails", "~> 8.0.0.beta1"
+  gem "sqlite3", "~> 2.0"
+end
+
 appraise "rails-main" do
   gem "rails", github: "rails/rails", branch: "main"
   gem "sqlite3", "~> 2.0"
