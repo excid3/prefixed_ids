@@ -129,11 +129,16 @@ module PrefixedIds
     extend ActiveSupport::Concern
 
     class_methods do
-      def exists?(id)
-        if _prefix_id.present? && id.is_a?(String)
-          super(_prefix_id.decode(id))
+      def exists?(id_or_conditions)
+        return super if _prefix_id.blank?
+
+        if id_or_conditions.is_a?(Hash)
+          id = id_or_conditions.delete(:id)
+          super(id_or_conditions.merge(id: _prefix_id.decode(id, fallback: _prefix_id_fallback)))
+        else if id_or_conditions.is_a?(Array)
+          raise "exists? does not support arrays of conditions for prefixed ids"
         else
-          super
+          super(_prefix_id.decode(id_or_conditions, fallback: _prefix_id_fallback))
         end
       end
     end

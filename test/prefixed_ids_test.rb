@@ -202,10 +202,24 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     refute Post.exists?(post.prefix_id)
   end
 
+  test "disabled exists? when fallback false" do
+    team = teams(:one)
+
+    assert Team.exists?(team.prefix_id)
+    refute Team.exists?(team.id)
+  end
+
   test "exists? works with conditions instead of ID" do
     account = accounts(:one)
 
     assert Account.exists?(id: account.id)
+  end
+
+  test "exists? works correctly with multiple conditions" do
+    account = accounts(:one)
+
+    assert Account.exists?(id: account.id, user_id: account.user_id)
+    refute Account.exists?(id: account.id, user_id: account.user_id + 1)
   end
 
   test "calling find on an associated model without prefix id succeeds" do
