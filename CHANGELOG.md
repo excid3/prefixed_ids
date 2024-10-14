@@ -1,5 +1,13 @@
 ### Unreleased
 
+* [Breaking] Remove `exists?` override.
+
+To continue using `exists?`, you can decode the ID first:
+
+```ruby
+User.exists? User.decode_prefix_id(params[:id])
+```
+
 ### 1.8.1
 
 * Ensure that decode returns all parts of composite key
