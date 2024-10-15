@@ -58,7 +58,7 @@ If `to_param` override is disabled:
 
 ##### Query by Prefixed ID
 
-By default, prefixed_ids overrids `find` and `to_param` to seamlessly URLs automatically.
+By default, prefixed_ids overrides `find` and `to_param` to seamlessly URLs automatically.
 
 ```ruby
 User.first.to_param
