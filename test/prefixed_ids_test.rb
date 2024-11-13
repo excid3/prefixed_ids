@@ -238,6 +238,12 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     end
   end
 
+  test "setter not created on polymorphic belongs to models" do
+    assert_raises NoMethodError do
+      Tag.new.taggable_prefix_id
+    end
+  end
+
   if PrefixedIds::Test.rails71_and_up?
     test "compound primary - can get prefix ID from original ID" do
       assert compound_primary_items(:one).id.is_a?(Array)

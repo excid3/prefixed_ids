@@ -116,6 +116,7 @@ module PrefixedIds
         name = args.first
         reflection = association[name]
 
+        return association if reflection.polymorphic?
         return association if reflection.klass._prefix_id.blank?
 
         generated_association_methods.class_eval <<-CODE, __FILE__, __LINE__ + 1

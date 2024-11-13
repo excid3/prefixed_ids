@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_07_14_120000) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_13_200714) do
   create_table "accounts", force: :cascade do |t|
     t.integer "user_id"
     t.datetime "created_at", null: false
@@ -37,6 +37,14 @@ ActiveRecord::Schema.define(version: 2024_07_14_120000) do
     t.datetime "updated_at", null: false
     t.index ["nonprefixed_item_id"], name: "index_posts_on_nonprefixed_item_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "taggable_type", null: false
+    t.integer "taggable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["taggable_type", "taggable_id"], name: "index_tags_on_taggable"
   end
 
   create_table "teams", force: :cascade do |t|
