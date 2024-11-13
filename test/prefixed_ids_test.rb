@@ -203,9 +203,16 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     assert_nil Post.new.to_param
   end
 
-  test "helper for getting prefix ID from belongs to models without loading the record" do
+  test "helper for getting prefix ID from belongs to models when associated model has prefix ID" do
     post = posts(:one)
     assert_equal post.user_prefix_id, post.user.prefix_id
+  end
+
+  test "no helper for getting prefix ID from belongs to models when associated model does not have prefix ID" do
+    post = posts(:one)
+    assert_raises NoMethodError do
+      post.nonprefixed_item_prefix_id
+    end
   end
 
   test "setter for using prefix ID while creating models with mass assignment" do
@@ -213,7 +220,13 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     assert_equal users(:two), post.user
   end
 
-  test "setter for belongs to models" do
+  test "no setter for using prefix ID while creating models with mass assignment when associated model does not have prefix ID" do
+    assert_raises ActiveModel::UnknownAttributeError do
+      Post.create!(user: users(:two), nonprefixed_item_prefix_id: "abc123")
+    end
+  end
+
+  test "setter for belongs to models that have prefix IDs" do
     post = Post.new
     post.user_prefix_id = users(:two).prefix_id
     assert_equal users(:two), post.user

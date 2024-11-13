@@ -110,9 +110,13 @@ module PrefixedIds
         super.tap { |r| r.extend ClassMethods }
       end
 
-      def belongs_to(name, *args, &)
+      def belongs_to(*args, **options, &)
         association = super
+
+        name = args.first
         reflection = association[name]
+
+        return association if reflection.klass._prefix_id.blank?
 
         generated_association_methods.class_eval <<-CODE, __FILE__, __LINE__ + 1
           def #{name}_prefix_id

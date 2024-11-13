@@ -32,8 +32,10 @@ ActiveRecord::Schema.define(version: 2024_07_14_120000) do
 
   create_table "posts", force: :cascade do |t|
     t.integer "user_id", null: false
+    t.integer "nonprefixed_item_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["nonprefixed_item_id"], name: "index_posts_on_nonprefixed_item_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -47,5 +49,6 @@ ActiveRecord::Schema.define(version: 2024_07_14_120000) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "posts", "nonprefixed_items"
   add_foreign_key "posts", "users"
 end
