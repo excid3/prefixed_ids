@@ -203,6 +203,16 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     assert_nil Post.new.to_param
   end
 
+  test "can retrieve a decoded ID from a prefixed ID" do
+    team = teams(:one)
+    assert_equal PrefixedIds.decode_prefix_id(team.id), team.id
+  end
+
+  test "decoded id returns actual id if passed a non-prefix_id" do
+    user = users(:one)
+    assert_equal PrefixedIds.decode_prefix_id(user.id), user.id
+  end
+
   if PrefixedIds::Test.rails71_and_up?
     test "compound primary - can get prefix ID from original ID" do
       assert compound_primary_items(:one).id.is_a?(Array)
