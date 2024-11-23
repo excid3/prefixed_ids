@@ -28,6 +28,14 @@ module PrefixedIds
     [prefix, id]
   end
 
+  def self.register_prefix(prefix, model:)
+    if (existing_model = PrefixedIds.models[prefix]) && existing_model != model
+      raise Error, "Prefix #{prefix} already defined for model #{model}"
+    end
+
+    PrefixedIds.models[prefix] = model
+  end
+
   # Adds `has_prefix_id` method
   module Rails
     extend ActiveSupport::Concern
@@ -46,7 +54,7 @@ module PrefixedIds
         self._prefix_id_fallback = fallback
 
         # Register with PrefixedIds to support PrefixedIds#find
-        PrefixedIds.models[prefix.to_s] = self
+        PrefixedIds.register_prefix(prefix.to_s, model: self)
       end
     end
   end
