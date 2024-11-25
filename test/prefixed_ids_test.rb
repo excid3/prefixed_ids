@@ -227,4 +227,28 @@ class PrefixedIdsTest < ActiveSupport::TestCase
       assert_equal prefix_decoded, [1, 1]
     end
   end
+
+  test "register_prefix adds the expected prefix and model" do
+    model = Class.new(ApplicationRecord) do
+      def self.name
+        "TestModel"
+      end
+    end
+
+    PrefixedIds.register_prefix("test_model", model: model)
+    assert_equal model, PrefixedIds.models["test_model"]
+  end
+
+  test "has_prefix_id raises when prefix was already used" do
+    assert PrefixedIds.models.key?("user")
+    assert_raises PrefixedIds::Error do
+      Class.new(ApplicationRecord) do
+        def self.name
+          "TestModel"
+        end
+
+        has_prefix_id :user
+      end
+    end
+  end
 end
