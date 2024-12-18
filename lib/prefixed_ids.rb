@@ -22,6 +22,16 @@ module PrefixedIds
     raise Error, "Unable to find model with prefix `#{prefix}`. Available prefixes are: #{models.keys.join(", ")}"
   end
 
+  # Returns a decoded ID from a prefix_id
+  def self.decode_prefix_id(prefix_id)
+    return prefix_id if prefix_id.nil? || prefix_id.is_a?(Integer)
+    return prefix_id unless models.keys.any? { |key| prefix_id.to_s.start_with?("#{key}#{delimiter}") }
+
+    model_name, _ = split_id(prefix_id)
+
+    models.fetch(model_name).decode_prefix_id(prefix_id)
+  end
+
   # Splits a prefixed ID into its prefix and ID
   def self.split_id(prefix_id, delimiter = PrefixedIds.delimiter)
     prefix, _, id = prefix_id.to_s.rpartition(delimiter)
