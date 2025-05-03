@@ -1,5 +1,7 @@
 ### Unreleased
 
+* [Breaking] Switch to [sqids](https://sqids.org/ruby) for hash ID generation. - @tarellel
+
 * [Breaking] Remove `exists?` override.
 
 To continue using `exists?`, you can decode the ID first:

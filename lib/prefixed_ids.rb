@@ -1,7 +1,7 @@
 require "prefixed_ids/version"
 require "prefixed_ids/engine"
 
-require "hashids"
+require "sqids"
 
 module PrefixedIds
   class Error < StandardError; end

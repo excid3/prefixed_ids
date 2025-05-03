@@ -2,8 +2,8 @@ PATH
   remote: ..
   specs:
     prefixed_ids (1.8.1)
-      hashids (>= 1.0.0, < 2.0.0)
       rails (>= 6.0.0)
+      sqids (>= 0.2.2,< 1.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -79,7 +79,6 @@ GEM
     erubi (1.13.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    hashids (1.0.6)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     json (2.8.2)
@@ -177,6 +176,7 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
+    sqids (0.2.2)
     sqlite3 (1.7.3)
       mini_portile2 (~> 2.8.0)
     sqlite3 (1.7.3-x86_64-darwin)

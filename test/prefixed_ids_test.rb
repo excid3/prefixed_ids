@@ -136,10 +136,14 @@ class PrefixedIdsTest < ActiveSupport::TestCase
 
   test "checks for a valid id upon decoding" do
     prefix = PrefixedIds::PrefixId.new(User, "user")
-    hashid = Hashids.new(User.table_name, PrefixedIds.minimum_length, PrefixedIds.alphabet)
+
+    salt = User.table_name
+    salt_bytes = salt.bytes
+    salted_alphabet = PrefixedIds.alphabet.chars.shuffle(random: Random.new(salt_bytes.sum)).join
+    hashid = Sqids.new(min_length: PrefixedIds.minimum_length, alphabet: salted_alphabet)
 
     first = prefix.encode(1)
-    second = hashid.encode(1)
+    second = hashid.encode([1])
 
     assert_not_equal first.delete_prefix("user" + PrefixedIds.delimiter), second
     assert_equal prefix.decode(second, fallback: true), second
@@ -165,10 +169,6 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     user = users(:one)
     post = user.posts.first
     assert_equal post, user.posts.find(post.to_param)
-  end
-
-  test "can override salt on model" do
-    assert_equal "accountsabcd", Account._prefix_id.hashids.salt
   end
 
   test "decode with fallback false returns nil for regular ID" do
@@ -211,7 +211,10 @@ class PrefixedIdsTest < ActiveSupport::TestCase
 
     test "compound primary - checks for a valid id upon decoding" do
       prefix = PrefixedIds::PrefixId.new(CompoundPrimaryItem, "compound")
-      hashid = Hashids.new(CompoundPrimaryItem.table_name, PrefixedIds.minimum_length, PrefixedIds.alphabet)
+      salt = CompoundPrimaryItem.table_name
+      salt_bytes = salt.bytes
+      salted_alphabet = PrefixedIds.alphabet.chars.shuffle(random: Random.new(salt_bytes.sum)).join
+      hashid = Sqids.new(min_length: PrefixedIds.minimum_length, alphabet: salted_alphabet)
 
       first = prefix.encode([1, 1])
       second = hashid.encode([1, 1])

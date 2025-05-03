@@ -7,7 +7,10 @@ module PrefixedIds
     def initialize(model, prefix, salt: PrefixedIds.salt, minimum_length: PrefixedIds.minimum_length, alphabet: PrefixedIds.alphabet, delimiter: PrefixedIds.delimiter, **options)
       @prefix = prefix.to_s
       @delimiter = delimiter.to_s
-      @hashids = Hashids.new("#{model.table_name}#{salt}", minimum_length, alphabet)
+      @salt = salt.to_s
+      salt_bytes = salt.bytes
+      @salted_alphabet = alphabet.chars.shuffle(random: Random.new(salt_bytes.sum)).join
+      @hashids = Sqids.new(min_length: minimum_length, alphabet: @salted_alphabet)
     end
 
     def encode(id)
