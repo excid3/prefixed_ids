@@ -97,6 +97,13 @@ module PrefixedIds
   module Finder
     extend ActiveSupport::Concern
 
+    # Methods added to relations and has_many associations
+    module RelationMethods
+      def prefix_ids
+        klass.prefix_ids(pluck(:id))
+      end
+    end
+
     class_methods do
       def find(*ids)
         # Skip if model doesn't use prefixed ids
@@ -113,12 +120,12 @@ module PrefixedIds
       end
 
       def relation
-        super.tap { |r| r.extend ClassMethods }
+        super.tap { |r| r.extend ClassMethods, RelationMethods }
       end
 
       def has_many(*args, &block)
         options = args.extract_options!
-        options[:extend] = Array(options[:extend]).push(ClassMethods)
+        options[:extend] = Array(options[:extend]).push(ClassMethods, RelationMethods)
         super(*args, **options, &block)
       end
     end

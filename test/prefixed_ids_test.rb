@@ -251,4 +251,26 @@ class PrefixedIdsTest < ActiveSupport::TestCase
       end
     end
   end
+
+  test "prefix_ids on relation returns array of prefix IDs" do
+    prefix_ids = User.all.prefix_ids
+    assert_equal 3, prefix_ids.length
+    assert prefix_ids.all? { |id| id.start_with?("user_") }
+  end
+
+  test "prefix_ids on scoped relation" do
+    user = users(:one)
+    prefix_ids = User.where(id: user.id).prefix_ids
+    assert_equal [user.prefix_id], prefix_ids
+  end
+
+  test "prefix_ids on has_many relation" do
+    user = users(:one)
+    post_prefix_ids = user.posts.prefix_ids
+    assert post_prefix_ids.all? { |id| id.start_with?("post_") }
+  end
+
+  test "prefix_ids on empty relation returns empty array" do
+    assert_equal [], User.where(id: -1).prefix_ids
+  end
 end
