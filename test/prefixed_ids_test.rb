@@ -24,7 +24,7 @@ class PrefixedIdsTest < ActiveSupport::TestCase
   test "can get prefix IDs from multiple original IDs" do
     assert_equal(
       [users(:one).prefix_id, users(:two).prefix_id, users(:three).prefix_id],
-      User.prefix_ids([users(:one).id, users(:two).id, users(:three).id]),
+      User.prefix_ids([users(:one).id, users(:two).id, users(:three).id])
     )
   end
 
@@ -35,7 +35,7 @@ class PrefixedIdsTest < ActiveSupport::TestCase
   test "can get original IDs from multiple prefix IDs" do
     assert_equal(
       [users(:one).id, users(:two).id, users(:three).id],
-      User.decode_prefix_ids([users(:one).prefix_id, users(:two).prefix_id, users(:three).prefix_id]),
+      User.decode_prefix_ids([users(:one).prefix_id, users(:two).prefix_id, users(:three).prefix_id])
     )
   end
 

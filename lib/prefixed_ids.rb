@@ -19,7 +19,7 @@ module PrefixedIds
     prefix, = split_id(prefix_id)
     models.fetch(prefix).find_by_prefix_id(prefix_id)
   rescue KeyError
-    raise Error, "Unable to find model with prefix `#{prefix}`. Available prefixes are: #{models.keys.join(', ')}"
+    raise Error, "Unable to find model with prefix `#{prefix}`. Available prefixes are: #{models.keys.join(", ")}"
   end
 
   # Splits a prefixed ID into its prefix and ID
@@ -125,7 +125,7 @@ module PrefixedIds
         super.tap { |r| r.extend ClassMethods, RelationMethods }
       end
 
-      def belongs_to(*args, **options, &)
+      def belongs_to(*args, **options, &block)
         association = super
 
         name = args.first
