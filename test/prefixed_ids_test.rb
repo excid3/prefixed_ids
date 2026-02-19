@@ -24,7 +24,7 @@ class PrefixedIdsTest < ActiveSupport::TestCase
   test "can get prefix IDs from multiple original IDs" do
     assert_equal(
       [users(:one).prefix_id, users(:two).prefix_id, users(:three).prefix_id],
-      User.prefix_ids([users(:one).id, users(:two).id, users(:three).id])
+      User.prefix_ids([users(:one).id, users(:two).id, users(:three).id]),
     )
   end
 
@@ -35,7 +35,7 @@ class PrefixedIdsTest < ActiveSupport::TestCase
   test "can get original IDs from multiple prefix IDs" do
     assert_equal(
       [users(:one).id, users(:two).id, users(:three).id],
-      User.decode_prefix_ids([users(:one).prefix_id, users(:two).prefix_id, users(:three).prefix_id])
+      User.decode_prefix_ids([users(:one).prefix_id, users(:two).prefix_id, users(:three).prefix_id]),
     )
   end
 
@@ -203,6 +203,47 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     assert_nil Post.new.to_param
   end
 
+  test "helper for getting prefix ID from belongs to models when associated model has prefix ID" do
+    post = posts(:one)
+    assert_equal post.user_prefix_id, post.user.prefix_id
+  end
+
+  test "no helper for getting prefix ID from belongs to models when associated model does not have prefix ID" do
+    post = posts(:one)
+    assert_raises NoMethodError do
+      post.nonprefixed_item_prefix_id
+    end
+  end
+
+  test "setter for using prefix ID while creating models with mass assignment" do
+    post = Post.create!(user_prefix_id: users(:two).prefix_id)
+    assert_equal users(:two), post.user
+  end
+
+  test "no setter for using prefix ID while creating models with mass assignment when associated model does not have prefix ID" do
+    assert_raises ActiveModel::UnknownAttributeError do
+      Post.create!(user: users(:two), nonprefixed_item_prefix_id: "abc123")
+    end
+  end
+
+  test "setter for belongs to models that have prefix IDs" do
+    post = Post.new
+    post.user_prefix_id = users(:two).prefix_id
+    assert_equal users(:two), post.user
+  end
+
+  test "setter not created on models without has_prefix_id" do
+    assert_raises NoMethodError do
+      NonprefixedItem.new.user_prefix_id
+    end
+  end
+
+  test "setter not created on polymorphic belongs to models" do
+    assert_raises NoMethodError do
+      Tag.new.taggable_prefix_id
+    end
+  end
+
   test "can retrieve a decoded ID from a prefixed ID" do
     team = teams(:one)
     assert_equal PrefixedIds.decode_prefix_id(team.id), team.id
@@ -212,7 +253,7 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     user = users(:one)
     assert_equal PrefixedIds.decode_prefix_id(user.id), user.id
   end
-
+  
   if PrefixedIds::Test.rails71_and_up?
     test "compound primary - can get prefix ID from original ID" do
       assert compound_primary_items(:one).id.is_a?(Array)
@@ -235,6 +276,30 @@ class PrefixedIdsTest < ActiveSupport::TestCase
 
       prefix_decoded = prefix.decode(first)
       assert_equal prefix_decoded, [1, 1]
+    end
+  end
+
+  test "register_prefix adds the expected prefix and model" do
+    model = Class.new(ApplicationRecord) do
+      def self.name
+        "TestModel"
+      end
+    end
+
+    PrefixedIds.register_prefix("test_model", model: model)
+    assert_equal model, PrefixedIds.models["test_model"]
+  end
+
+  test "has_prefix_id raises when prefix was already used" do
+    assert PrefixedIds.models.key?("user")
+    assert_raises PrefixedIds::Error do
+      Class.new(ApplicationRecord) do
+        def self.name
+          "TestModel"
+        end
+
+        has_prefix_id :user
+      end
     end
   end
 end

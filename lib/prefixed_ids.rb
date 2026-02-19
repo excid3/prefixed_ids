@@ -16,10 +16,10 @@ module PrefixedIds
   mattr_accessor :models, default: {}
 
   def self.find(prefix_id)
-    prefix, _ = split_id(prefix_id)
+    prefix, = split_id(prefix_id)
     models.fetch(prefix).find_by_prefix_id(prefix_id)
   rescue KeyError
-    raise Error, "Unable to find model with prefix `#{prefix}`. Available prefixes are: #{models.keys.join(", ")}"
+    raise Error, "Unable to find model with prefix `#{prefix}`. Available prefixes are: #{models.keys.join(', ')}"
   end
 
   # Returns a decoded ID from a prefix_id
@@ -38,6 +38,14 @@ module PrefixedIds
     [prefix, id]
   end
 
+  def self.register_prefix(prefix, model:)
+    if (existing_model = PrefixedIds.models[prefix]) && existing_model != model
+      raise Error, "Prefix #{prefix} already defined for model #{model}"
+    end
+
+    PrefixedIds.models[prefix] = model
+  end
+
   # Adds `has_prefix_id` method
   module Rails
     extend ActiveSupport::Concern
@@ -52,11 +60,12 @@ module PrefixedIds
         include Attribute
         include Finder if override_find
         include ToParam if override_param
+
         self._prefix_id = PrefixId.new(self, prefix, **options)
         self._prefix_id_fallback = fallback
 
         # Register with PrefixedIds to support PrefixedIds#find
-        PrefixedIds.models[prefix.to_s] = self
+        PrefixedIds.register_prefix(prefix.to_s, model: self)
       end
     end
   end
@@ -107,6 +116,7 @@ module PrefixedIds
         prefix_ids = ids.flatten.map do |id|
           prefix_id = _prefix_id.decode(id, fallback: _prefix_id_fallback)
           raise Error, "#{id} is not a valid prefix_id" if !_prefix_id_fallback && prefix_id.nil?
+
           prefix_id
         end
         prefix_ids = [prefix_ids] if ids.first.is_a?(Array)
@@ -116,6 +126,29 @@ module PrefixedIds
 
       def relation
         super.tap { |r| r.extend ClassMethods }
+      end
+
+      def belongs_to(*args, **options, &)
+        association = super
+
+        name = args.first
+        reflection = association[name]
+
+        return association if reflection.polymorphic?
+        return association if reflection.klass._prefix_id.blank?
+
+        generated_association_methods.class_eval <<-CODE, __FILE__, __LINE__ + 1
+          def #{name}_prefix_id
+            #{reflection.klass}._prefix_id.encode(#{reflection.foreign_key})
+          end
+
+          def #{name}_prefix_id=(prefix_id)
+            decoded_id = #{reflection.klass}._prefix_id.decode(prefix_id, fallback: #{reflection.klass}._prefix_id_fallback)
+            send("#{reflection.foreign_key}=", decoded_id)
+          end
+        CODE
+
+        association
       end
 
       def has_many(*args, &block)
