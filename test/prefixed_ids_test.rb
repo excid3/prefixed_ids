@@ -253,7 +253,7 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     user = users(:one)
     assert_equal PrefixedIds.decode_prefix_id(user.id), user.id
   end
-  
+
   if PrefixedIds::Test.rails71_and_up?
     test "compound primary - can get prefix ID from original ID" do
       assert compound_primary_items(:one).id.is_a?(Array)
