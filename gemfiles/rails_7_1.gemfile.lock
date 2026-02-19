@@ -131,8 +131,7 @@ GEM
     marcel (1.1.0)
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
-    minitest (6.0.1)
-      prism (~> 1.5)
+    minitest (5.27.0)
     mutex_m (0.3.0)
     net-imap (0.6.3)
       date
@@ -273,6 +272,7 @@ PLATFORMS
 
 DEPENDENCIES
   appraisal
+  minitest (< 6.0)
   prefixed_ids!
   rails (~> 7.1.0)
   sqlite3 (~> 1.4)

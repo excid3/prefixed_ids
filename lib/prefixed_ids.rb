@@ -129,7 +129,7 @@ module PrefixedIds
         association = super
 
         name = args.first
-        reflection = association[name]
+        reflection = association[name] || association[name.to_s]
 
         return association if reflection.polymorphic?
         return association if reflection.klass._prefix_id.blank?

@@ -69,10 +69,13 @@ GEM
       thor (>= 0.14.0)
     ast (2.4.3)
     base64 (0.3.0)
+    benchmark (0.5.0)
+    bigdecimal (4.0.1)
     builder (3.3.0)
-    concurrent-ruby (1.3.6)
+    concurrent-ruby (1.3.4)
     crass (1.0.6)
     date (3.5.1)
+    drb (2.2.3)
     erubi (1.13.1)
     globalid (1.1.0)
       activesupport (>= 5.0)
@@ -97,6 +100,7 @@ GEM
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
     minitest (5.27.0)
+    mutex_m (0.3.0)
     net-imap (0.6.3)
       date
       net-protocol
@@ -218,6 +222,12 @@ PLATFORMS
 
 DEPENDENCIES
   appraisal
+  benchmark
+  bigdecimal
+  concurrent-ruby (< 1.3.5)
+  drb
+  minitest (< 6.0)
+  mutex_m
   prefixed_ids!
   rails (~> 6.0.0)
   sqlite3 (~> 1.4)
