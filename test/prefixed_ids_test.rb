@@ -324,4 +324,25 @@ class PrefixedIdsTest < ActiveSupport::TestCase
   test "prefix_ids on empty relation returns empty array" do
     assert_equal [], User.where(id: -1).prefix_ids
   end
+
+  test "prefix_ids on relation with override_find: false" do
+    prefix_ids = Account.all.prefix_ids
+    assert prefix_ids.all? { |id| id.start_with?("acct_") }
+  end
+
+  test "prefix_ids on scoped relation with override_find: false" do
+    account = accounts(:one)
+    prefix_ids = Account.where(id: account.id).prefix_ids
+    assert_equal [account.prefix_id], prefix_ids
+  end
+
+  test "prefix_ids on has_many association with override_find: false" do
+    user = users(:one)
+    account_prefix_ids = user.accounts.prefix_ids
+    assert account_prefix_ids.all? { |id| id.start_with?("acct_") }
+  end
+
+  test "prefix_ids on empty relation with override_find: false" do
+    assert_equal [], Account.where(id: -1).prefix_ids
+  end
 end
