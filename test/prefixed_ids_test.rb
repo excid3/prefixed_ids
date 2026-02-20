@@ -245,7 +245,7 @@ class PrefixedIdsTest < ActiveSupport::TestCase
   end
 
   test "can retrieve a decoded ID from a prefixed ID" do
-    team = Team.find_by(id: ActiveRecord::FixtureSet.identify(:one))
+    team = teams(:one)
     assert_equal PrefixedIds.decode_prefix_id(team.prefix_id), team.id
   end
 
