@@ -74,6 +74,13 @@ module PrefixedIds
   module Attribute
     extend ActiveSupport::Concern
 
+    # Methods added to relations and has_many associations
+    module RelationMethods
+      def prefix_ids
+        klass.prefix_ids(pluck(:id))
+      end
+    end
+
     class_methods do
       def find_by_prefix_id(id)
         find_by(id: _prefix_id.decode(id))
@@ -98,6 +105,16 @@ module PrefixedIds
       def decode_prefix_ids(ids)
         ids.map { |id| decode_prefix_id(id) }
       end
+
+      def relation
+        super.tap { |r| r.extend RelationMethods }
+      end
+
+      def has_many(*args, &block)
+        options = args.extract_options!
+        options[:extend] = Array(options[:extend]).push(RelationMethods)
+        super(*args, **options, &block)
+      end
     end
 
     def prefix_id
@@ -107,13 +124,6 @@ module PrefixedIds
 
   module Finder
     extend ActiveSupport::Concern
-
-    # Methods added to relations and has_many associations
-    module RelationMethods
-      def prefix_ids
-        klass.prefix_ids(pluck(:id))
-      end
-    end
 
     class_methods do
       def find(*ids)
@@ -132,7 +142,7 @@ module PrefixedIds
       end
 
       def relation
-        super.tap { |r| r.extend ClassMethods, RelationMethods }
+        super.tap { |r| r.extend ClassMethods }
       end
 
       def belongs_to(*args, **options, &block)
@@ -160,7 +170,7 @@ module PrefixedIds
 
       def has_many(*args, &block)
         options = args.extract_options!
-        options[:extend] = Array(options[:extend]).push(ClassMethods, RelationMethods)
+        options[:extend] = Array(options[:extend]).push(ClassMethods)
         super(*args, **options, &block)
       end
     end
