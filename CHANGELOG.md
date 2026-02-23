@@ -1,11 +1,26 @@
 ### Unreleased
 
+### 1.9.0
+
 * [Breaking] Remove `exists?` override.
 
 To continue using `exists?`, you can decode the ID first:
 
 ```ruby
 User.exists? User.decode_prefix_id(params[:id])
+```
+
+* Add `prefix_id` to associations
+
+```ruby
+Post.create(user_prefix_id: "user_1234")
+post.user_prefix_id
+```
+
+* Add `prefix_ids` to relations
+
+```ruby
+Post.all.prefix_ids #=> ["post_1234", "post_5678"]
 ```
 
 ### 1.8.1
