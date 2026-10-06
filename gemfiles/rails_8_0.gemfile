@@ -6,6 +6,7 @@ gem "sqlite3", "~> 2.0"
 gem "standard"
 gem "appraisal"
 gem "rails", "~> 8.0.0.beta1"
+gem "json", "< 3"
 gem "minitest", "< 6.0"
 
 gemspec path: "../"

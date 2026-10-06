@@ -440,4 +440,10 @@ class PrefixedIdsTest < ActiveSupport::TestCase
 
     refute model.new.respond_to?(:missing_thing_prefix_id)
   end
+
+  test "works with GlobalID" do
+    user = users(:one)
+    assert_equal user, GlobalID::Locator.locate(user.to_global_id)
+    assert_equal user, GlobalID::Locator.locate_signed(user.to_signed_global_id)
+  end
 end
