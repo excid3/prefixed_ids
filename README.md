@@ -87,11 +87,11 @@ end
 ```
 
 > [!NOTE]
-> If you're aiming to masking primary key ID for security reasons, make sure to use `find_by_prefix_id` and [add a salt](#salt).
+> If you're aiming to mask primary key IDs, make sure to use `find_by_prefix_id` and [add a salt](#salt). Prefix IDs are not a replacement for authorization, so always scope lookups to records the user is allowed to access.
 
 ##### Salt
 
-A salt is a secret value that makes it impossible to reverse engineer IDs. We recommend adding a salt to make your Prefix IDs unguessable.
+Without a salt, anyone can decode your Prefix IDs since they're only based on the table name. Adding a secret salt makes them much harder to decode or guess, but this is obfuscation, not encryption.
 
 ###### Global Salt
 
