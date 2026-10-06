@@ -2,7 +2,7 @@
 
 * [Breaking] Raise `PrefixedIds::Error` when two models use the same prefix. Previously, `PrefixedIds.find` silently used whichever model was defined last.
 
-* Fix `exists?` with prefix IDs. It now works on relations and associations, can be called without arguments, and respects `fallback: false` by returning `false` for strings that aren't valid prefix IDs. It's now controlled by `override_find` and the `override_exists` option has been removed.
+* Fix `exists?` with prefix IDs. It now works on relations and associations, can be called without arguments, and respects `fallback`. With `fallback: true` (the default), regular IDs as strings like `exists?("123")` now return `true`, matching `find`. With `fallback: false`, strings that aren't valid prefix IDs return `false`.
 
 ```ruby
 user.posts.exists?("post_1234")

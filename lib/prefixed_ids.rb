@@ -54,16 +54,18 @@ module PrefixedIds
     included do
       class_attribute :_prefix_id
       class_attribute :_prefix_id_fallback
+      class_attribute :_prefix_id_override_exists
     end
 
     class_methods do
-      def has_prefix_id(prefix, override_find: true, override_param: true, fallback: true, **options)
+      def has_prefix_id(prefix, override_find: true, override_param: true, override_exists: true, fallback: true, **options)
         include Attribute
         include Finder if override_find
         include ToParam if override_param
 
         self._prefix_id = PrefixId.new(self, prefix, **options)
         self._prefix_id_fallback = fallback
+        self._prefix_id_override_exists = override_exists
 
         # Register with PrefixedIds to support PrefixedIds#find
         PrefixedIds.register_prefix(prefix.to_s, model: self)
@@ -71,14 +73,32 @@ module PrefixedIds
     end
   end
 
+  # Decodes prefix IDs passed to `exists?` unless disabled with `override_exists: false`
+  module Exists
+    # Only Strings are decoded. Rails calls exists? internally with Integer IDs and conditions, so those pass through
+    def exists?(conditions = :none)
+      return super unless _prefix_id_override_exists && _prefix_id.present? && conditions.is_a?(String)
+
+      id = _prefix_id.decode(conditions, fallback: _prefix_id_fallback)
+      id.nil? ? false : super(id)
+    end
+  end
+
   # Included when a module uses `has_prefix_id`
   module Attribute
     extend ActiveSupport::Concern
 
+    included do
+      extend Exists
+    end
+
     # Methods added to relations and has_many associations
     module RelationMethods
-      def prefix_ids
-        klass.prefix_ids(pluck(:id))
+      include Exists
+
+      # Without arguments, returns prefix IDs for the records in the relation
+      def prefix_ids(ids = nil)
+        klass.prefix_ids(ids || pluck(:id))
       end
     end
 
@@ -142,14 +162,6 @@ module PrefixedIds
         super(*prefix_ids)
       end
 
-      # Only Strings are decoded. Rails calls exists? internally with Integer IDs and conditions, so those pass through
-      def exists?(conditions = :none)
-        return super unless _prefix_id.present? && conditions.is_a?(String)
-
-        id = _prefix_id.decode(conditions, fallback: _prefix_id_fallback)
-        id.nil? ? false : super(id)
-      end
-
       def relation
         super.tap { |r| r.extend ClassMethods }
       end
@@ -161,15 +173,22 @@ module PrefixedIds
         reflection = association[name] || association[name.to_s]
 
         return association if reflection.polymorphic?
-        return association if reflection.klass._prefix_id.blank?
+
+        # Skip helpers if the associated class can't be loaded yet, so Rails only raises when the association is used
+        klass = begin
+          reflection.klass
+        rescue NameError
+          nil
+        end
+        return association if klass.nil? || klass._prefix_id.blank?
 
         generated_association_methods.class_eval <<-CODE, __FILE__, __LINE__ + 1
           def #{name}_prefix_id
-            #{reflection.klass}._prefix_id.encode(#{reflection.foreign_key})
+            #{klass}._prefix_id.encode(#{reflection.foreign_key})
           end
 
           def #{name}_prefix_id=(prefix_id)
-            decoded_id = #{reflection.klass}._prefix_id.decode(prefix_id, fallback: #{reflection.klass}._prefix_id_fallback)
+            decoded_id = #{klass}._prefix_id.decode(prefix_id, fallback: #{klass}._prefix_id_fallback)
             send("#{reflection.foreign_key}=", decoded_id)
           end
         CODE

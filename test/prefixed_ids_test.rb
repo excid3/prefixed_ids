@@ -374,11 +374,11 @@ class PrefixedIdsTest < ActiveSupport::TestCase
 
   test "exists? with prefix ID on relations and associations" do
     user = users(:one)
-    post = user.posts.first
+    account = accounts(:one)
     assert User.where(id: user.id).exists?(user.prefix_id)
     refute User.where.not(id: user.id).exists?(user.prefix_id)
-    assert user.posts.exists?(post.prefix_id)
-    refute users(:two).posts.exists?(post.prefix_id)
+    assert user.accounts.exists?(account.prefix_id)
+    refute users(:two).accounts.exists?(account.prefix_id)
   end
 
   test "exists? with regular IDs and conditions" do
@@ -408,7 +408,36 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     assert user.posts.include?(user.posts.first)
   end
 
-  test "exists? is not overridden with override_find: false" do
-    refute Account.exists?(accounts(:one).prefix_id)
+  test "exists? still decodes prefix IDs with override_find: false" do
+    assert Account.exists?(accounts(:one).prefix_id)
+  end
+
+  test "exists? is not overridden with override_exists: false" do
+    post = posts(:one)
+    refute Post.exists?(post.prefix_id)
+    refute users(:one).posts.exists?(post.prefix_id)
+    assert Post.exists?(post.id)
+  end
+
+  test "prefix_ids on relations and associations accepts IDs" do
+    user = users(:one)
+    ids = [users(:one).id, users(:two).id]
+    assert_equal User.prefix_ids(ids), User.where(id: user.id).prefix_ids(ids)
+    assert_equal Post.prefix_ids(ids), user.posts.prefix_ids(ids)
+  end
+
+  test "belongs_to to a class that can't be loaded doesn't raise when defined" do
+    model = Class.new(ApplicationRecord) do
+      self.table_name = "posts"
+
+      def self.name
+        "MissingAssociationPost"
+      end
+
+      has_prefix_id :missing_association_post
+      belongs_to :missing_thing, optional: true
+    end
+
+    refute model.new.respond_to?(:missing_thing_prefix_id)
   end
 end
