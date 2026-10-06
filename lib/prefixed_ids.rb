@@ -39,8 +39,9 @@ module PrefixedIds
   end
 
   def self.register_prefix(prefix, model:)
-    if (existing_model = PrefixedIds.models[prefix]) && existing_model != model
-      raise Error, "Prefix #{prefix} already defined for model #{model}"
+    # Compare names since code reloading creates a new class for the same model
+    if (existing_model = PrefixedIds.models[prefix]) && existing_model.name != model.name
+      raise Error, "Prefix #{prefix} already defined for model #{existing_model}"
     end
 
     PrefixedIds.models[prefix] = model
@@ -139,6 +140,14 @@ module PrefixedIds
         prefix_ids = [prefix_ids] if ids.first.is_a?(Array)
 
         super(*prefix_ids)
+      end
+
+      # Only Strings are decoded. Rails calls exists? internally with Integer IDs and conditions, so those pass through
+      def exists?(conditions = :none)
+        return super unless _prefix_id.present? && conditions.is_a?(String)
+
+        id = _prefix_id.decode(conditions, fallback: _prefix_id_fallback)
+        id.nil? ? false : super(id)
       end
 
       def relation

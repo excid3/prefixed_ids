@@ -1,11 +1,17 @@
 ### Unreleased
 
-* [Breaking] Remove `exists?` override.
+* [Breaking] Raise `PrefixedIds::Error` when two models use the same prefix. Previously, `PrefixedIds.find` silently used whichever model was defined last.
 
-To continue using `exists?`, you can decode the ID first:
+* Fix `exists?` with prefix IDs. It now works on relations and associations, can be called without arguments, and respects `fallback: false` by returning `false` for strings that aren't valid prefix IDs. It's now controlled by `override_find` and the `override_exists` option has been removed.
 
 ```ruby
-User.exists? User.decode_prefix_id(params[:id])
+user.posts.exists?("post_1234")
+```
+
+* Add `PrefixedIds.decode_prefix_id` to decode a prefix ID for any model
+
+```ruby
+PrefixedIds.decode_prefix_id("user_1234") #=> 1
 ```
 
 * Add `prefix_id` to associations

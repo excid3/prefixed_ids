@@ -303,6 +303,26 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     end
   end
 
+  test "register_prefix allows a reloaded model with the same name" do
+    reloaded = Class.new(ApplicationRecord) do
+      def self.name
+        "User"
+      end
+    end
+
+    PrefixedIds.register_prefix("user", model: reloaded)
+    assert_equal reloaded, PrefixedIds.models["user"]
+  ensure
+    PrefixedIds.models["user"] = User
+  end
+
+  test "register_prefix error names the model already using the prefix" do
+    error = assert_raises PrefixedIds::Error do
+      PrefixedIds.register_prefix("user", model: Account)
+    end
+    assert_equal "Prefix user already defined for model User", error.message
+  end
+
   test "prefix_ids on relation returns array of prefix IDs" do
     prefix_ids = User.all.prefix_ids
     assert_equal 3, prefix_ids.length
@@ -344,5 +364,51 @@ class PrefixedIdsTest < ActiveSupport::TestCase
 
   test "prefix_ids on empty relation with override_find: false" do
     assert_equal [], Account.where(id: -1).prefix_ids
+  end
+
+  test "exists? with prefix ID" do
+    user = users(:one)
+    assert User.exists?(user.prefix_id)
+    refute User.exists?(User.prefix_id(999_999))
+  end
+
+  test "exists? with prefix ID on relations and associations" do
+    user = users(:one)
+    post = user.posts.first
+    assert User.where(id: user.id).exists?(user.prefix_id)
+    refute User.where.not(id: user.id).exists?(user.prefix_id)
+    assert user.posts.exists?(post.prefix_id)
+    refute users(:two).posts.exists?(post.prefix_id)
+  end
+
+  test "exists? with regular IDs and conditions" do
+    user = users(:one)
+    assert User.exists?
+    assert User.exists?(user.id)
+    assert User.exists?(user.id.to_s)
+    assert User.exists?(id: user.id)
+    refute User.exists?(false)
+  end
+
+  test "exists? with fallback false rejects unprefixed strings" do
+    team = Team.find_by(id: ActiveRecord::FixtureSet.identify(:one))
+    assert Team.exists?(team.prefix_id)
+    refute Team.exists?(team.id.to_s)
+    refute Team.exists?("garbage")
+  end
+
+  test "exists? with fallback false still accepts Integer IDs used by Rails internals" do
+    team = Team.find_by(id: ActiveRecord::FixtureSet.identify(:one))
+    assert Team.exists?(team.id)
+    assert Team.where(id: team.id).include?(team)
+  end
+
+  test "include? on unloaded association uses exists? with Integer IDs" do
+    user = users(:one)
+    assert user.posts.include?(user.posts.first)
+  end
+
+  test "exists? is not overridden with override_find: false" do
+    refute Account.exists?(accounts(:one).prefix_id)
   end
 end
