@@ -1,7 +1,5 @@
 ### Unreleased
 
-### 1.9.0
-
 * [Breaking] Remove `exists?` override.
 
 To continue using `exists?`, you can decode the ID first:
