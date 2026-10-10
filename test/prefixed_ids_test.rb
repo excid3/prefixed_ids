@@ -48,7 +48,7 @@ class PrefixedIdsTest < ActiveSupport::TestCase
   end
 
   test "decoding rejects characters outside the alphabet" do
-    invalid = "user_#{user_hash[0, 10]}-#{user_hash[10..]}"
+    invalid = "user_#{user_hash.insert(10, "-")}"
     assert_rejects_prefix_id invalid
     assert_nil PrefixedIds.find(invalid)
   end
