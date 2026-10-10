@@ -33,7 +33,7 @@ module PrefixedIds
         (ids.size == 1) ? ids.first : ids
       end
     rescue Hashids::InputError
-      # Raised when the hash contains characters outside the alphabet
+      # Bad characters from user input shouldn't blow up finders
       fallback_value
     end
 
