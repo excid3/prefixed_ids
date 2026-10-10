@@ -24,7 +24,7 @@ module PrefixedIds
       # Reject IDs whose prefix isn't ours, even if the hash would decode
       return fallback_value unless prefix == @prefix
 
-      decoded_hashid = @hashids.decode(id_without_prefix)
+      decoded_hashid = decode_hashid(id_without_prefix)
 
       if !valid?(decoded_hashid)
         fallback_value
@@ -32,12 +32,16 @@ module PrefixedIds
         _, *ids = decoded_hashid
         (ids.size == 1) ? ids.first : ids
       end
-    rescue Hashids::InputError
-      # Bad characters from user input shouldn't blow up finders
-      fallback_value
     end
 
     private
+
+    # Bad characters from user input shouldn't blow up finders
+    def decode_hashid(hashid)
+      @hashids.decode(hashid)
+    rescue Hashids::InputError
+      []
+    end
 
     def valid?(decoded_hashid)
       decoded_hashid.size >= 2 && decoded_hashid.first == TOKEN
