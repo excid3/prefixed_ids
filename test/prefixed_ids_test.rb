@@ -39,6 +39,47 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     )
   end
 
+  test "decoding rejects a prefix ID with the wrong prefix" do
+    user = users(:one)
+    hash = user.prefix_id.delete_prefix("user_")
+
+    assert_nil User.decode_prefix_id("tab_#{hash}")
+    assert_nil User.find_by_prefix_id("tab_#{hash}")
+    refute User.exists?("tab_#{hash}")
+    assert_raises(ActiveRecord::RecordNotFound) { User.find("tab_#{hash}") }
+  end
+
+  test "decoding rejects a hash without a prefix" do
+    user = users(:one)
+    hash = user.prefix_id.delete_prefix("user_")
+
+    assert_nil User.decode_prefix_id(hash)
+    assert_nil User.find_by_prefix_id(hash)
+    refute User.exists?(hash)
+    assert_raises(ActiveRecord::RecordNotFound) { User.find(hash) }
+  end
+
+  test "decoding returns nil for characters outside the alphabet" do
+    user = users(:one)
+    hash = user.prefix_id.delete_prefix("user_")
+    invalid = "user_#{hash[0, 10]}-#{hash[10..]}"
+
+    assert_nil User.decode_prefix_id(invalid)
+    assert_nil User.find_by_prefix_id(invalid)
+    refute User.exists?(invalid)
+    assert_raises(ActiveRecord::RecordNotFound) { User.find(invalid) }
+    assert_raises(ActiveRecord::RecordNotFound) { User.find_by_prefix_id!(invalid) }
+    assert_nil PrefixedIds.find(invalid)
+  end
+
+  test "decoding with fallback returns the original value for invalid prefix IDs" do
+    user = users(:one)
+    hash = user.prefix_id.delete_prefix("user_")
+
+    assert_equal "tab_#{hash}", User._prefix_id.decode("tab_#{hash}", fallback: true)
+    assert_equal "user_abc-def", User._prefix_id.decode("user_abc-def", fallback: true)
+  end
+
   test "has a prefix ID" do
     prefix_id = users(:one).prefix_id
     assert_not_nil prefix_id

@@ -19,7 +19,11 @@ module PrefixedIds
     # decode returns an array
     def decode(id, fallback: false)
       fallback_value = fallback ? id : nil
-      _, id_without_prefix = PrefixedIds.split_id(id, @delimiter)
+      prefix, id_without_prefix = PrefixedIds.split_id(id, @delimiter)
+
+      # Reject IDs whose prefix isn't ours, even if the hash would decode
+      return fallback_value unless prefix == @prefix
+
       decoded_hashid = @hashids.decode(id_without_prefix)
 
       if !valid?(decoded_hashid)
@@ -28,6 +32,9 @@ module PrefixedIds
         _, *ids = decoded_hashid
         (ids.size == 1) ? ids.first : ids
       end
+    rescue Hashids::InputError
+      # Raised when the hash contains characters outside the alphabet
+      fallback_value
     end
 
     private
