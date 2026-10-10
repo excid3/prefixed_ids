@@ -1,5 +1,7 @@
 ### Unreleased
 
+* Fix decoding to reject prefix IDs with the wrong prefix, no prefix, or characters outside the alphabet. Previously, `find`, `find_by_prefix_id`, and `exists?` accepted any prefix as long as the hash decoded, and invalid characters raised `Hashids::InputError`. All three cases now behave like any other invalid ID, returning `nil` or raising `ActiveRecord::RecordNotFound`.
+
 * [Breaking] Raise `PrefixedIds::Error` when two models use the same prefix. Previously, `PrefixedIds.find` silently used whichever model was defined last.
 
 * Fix `exists?` with prefix IDs. It now works on relations and associations, can be called without arguments, and respects `fallback`. With `fallback: true` (the default), regular IDs as strings like `exists?("123")` now return `true`, matching `find`. With `fallback: false`, strings that aren't valid prefix IDs return `false`.

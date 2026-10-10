@@ -39,6 +39,25 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     )
   end
 
+  test "decoding rejects a prefix ID with the wrong prefix" do
+    assert_rejects_prefix_id "tab_#{user_hash}"
+  end
+
+  test "decoding rejects a hash without a prefix" do
+    assert_rejects_prefix_id user_hash
+  end
+
+  test "decoding rejects characters outside the alphabet" do
+    invalid = "user_#{user_hash.insert(10, "-")}"
+    assert_rejects_prefix_id invalid
+    assert_nil PrefixedIds.find(invalid)
+  end
+
+  test "decoding with fallback returns the original value for invalid prefix IDs" do
+    assert_equal "tab_#{user_hash}", User._prefix_id.decode("tab_#{user_hash}", fallback: true)
+    assert_equal "user_abc-def", User._prefix_id.decode("user_abc-def", fallback: true)
+  end
+
   test "has a prefix ID" do
     prefix_id = users(:one).prefix_id
     assert_not_nil prefix_id
@@ -445,5 +464,19 @@ class PrefixedIdsTest < ActiveSupport::TestCase
     user = users(:one)
     assert_equal user, GlobalID::Locator.locate(user.to_global_id)
     assert_equal user, GlobalID::Locator.locate_signed(user.to_signed_global_id)
+  end
+
+  private
+
+  def user_hash
+    users(:one).prefix_id.delete_prefix("user_")
+  end
+
+  def assert_rejects_prefix_id(id)
+    assert_nil User.decode_prefix_id(id)
+    assert_nil User.find_by_prefix_id(id)
+    refute User.exists?(id)
+    assert_raises(ActiveRecord::RecordNotFound) { User.find(id) }
+    assert_raises(ActiveRecord::RecordNotFound) { User.find_by_prefix_id!(id) }
   end
 end
