@@ -51,7 +51,7 @@ module PrefixedIds
 
     # Read lazily since the primary key isn't known when `has_prefix_id` is called
     def primary_key_size
-      @model.primary_key.is_a?(Array) ? @model.primary_key.size : 1
+      Array.wrap(@model.primary_key).size
     end
   end
 end
