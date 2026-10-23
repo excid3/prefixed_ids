@@ -1,5 +1,7 @@
 ### Unreleased
 
+### 1.9.1
+
 * Reject prefix IDs that encode a different number of IDs than the model's primary key. Previously, a hash of several IDs on a single column primary key decoded to an array, so `find_by_prefix_id` matched one of several records and `find` returned an array. #114
 
 ### 1.9.0
