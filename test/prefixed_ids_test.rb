@@ -296,6 +296,21 @@ class PrefixedIdsTest < ActiveSupport::TestCase
       prefix_decoded = prefix.decode(first)
       assert_equal prefix_decoded, [1, 1]
     end
+
+    test "compound primary - rejects a hash with the wrong number of ids" do
+      prefix = PrefixedIds::PrefixId.new(CompoundPrimaryItem, "compound")
+      assert_nil prefix.decode(prefix.encode(1))
+      assert_nil prefix.decode(prefix.encode([1, 1, 1]))
+    end
+  end
+
+  test "rejects a hash of several ids on a single column primary key" do
+    several = User._prefix_id.encode([users(:one).id, users(:two).id])
+
+    assert_nil User.decode_prefix_id(several)
+    assert_nil User.find_by_prefix_id(several)
+    assert_raises(ActiveRecord::RecordNotFound) { User.find(several) }
+    refute User.exists?(several)
   end
 
   test "register_prefix adds the expected prefix and model" do
