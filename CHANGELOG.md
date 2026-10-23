@@ -1,5 +1,7 @@
 ### Unreleased
 
+* Reject prefix IDs that encode a different number of IDs than the model's primary key. Previously, a hash of several IDs on a single column primary key decoded to an array, so `find_by_prefix_id` matched one of several records and `find` returned an array. #114
+
 ### 1.9.0
 
 * Fix decoding to reject prefix IDs with the wrong prefix, no prefix, or characters outside the alphabet. Previously, `find`, `find_by_prefix_id`, and `exists?` accepted any prefix as long as the hash decoded, and invalid characters raised `Hashids::InputError`. All three cases now behave like any other invalid ID, returning `nil` or raising `ActiveRecord::RecordNotFound`.

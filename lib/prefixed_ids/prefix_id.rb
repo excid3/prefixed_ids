@@ -5,6 +5,7 @@ module PrefixedIds
     TOKEN = 123
 
     def initialize(model, prefix, salt: PrefixedIds.salt, minimum_length: PrefixedIds.minimum_length, alphabet: PrefixedIds.alphabet, delimiter: PrefixedIds.delimiter, **options)
+      @model = model
       @prefix = prefix.to_s
       @delimiter = delimiter.to_s
       @hashids = Hashids.new("#{model.table_name}#{salt}", minimum_length, alphabet)
@@ -43,8 +44,14 @@ module PrefixedIds
       []
     end
 
+    # The number of IDs must match the primary key, so a hash of several IDs can't be used on a single column primary key
     def valid?(decoded_hashid)
-      decoded_hashid.size >= 2 && decoded_hashid.first == TOKEN
+      decoded_hashid.first == TOKEN && decoded_hashid.size == primary_key_size + 1
+    end
+
+    # Read lazily since the primary key isn't known when `has_prefix_id` is called
+    def primary_key_size
+      Array.wrap(@model.primary_key).size
     end
   end
 end
