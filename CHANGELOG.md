@@ -1,5 +1,7 @@
 ### Unreleased
 
+### 1.9.2
+
 * Fix `belongs_to` raising `TypeError` on Rails main.
 
 ### 1.9.1
