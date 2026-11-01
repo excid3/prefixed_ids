@@ -166,13 +166,11 @@ module PrefixedIds
         super.tap { |r| r.extend ClassMethods }
       end
 
-      def belongs_to(*args, **options, &block)
-        association = super
+      def belongs_to(name, *args, **options, &block)
+        super
 
-        name = args.first
-        reflection = association[name] || association[name.to_s]
-
-        return association if reflection.polymorphic?
+        reflection = reflect_on_association(name)
+        return if reflection.polymorphic?
 
         # Skip helpers if the associated class can't be loaded yet, so Rails only raises when the association is used
         klass = begin
@@ -180,7 +178,7 @@ module PrefixedIds
         rescue NameError
           nil
         end
-        return association if klass.nil? || klass._prefix_id.blank?
+        return if klass.nil? || klass._prefix_id.blank?
 
         generated_association_methods.class_eval <<-CODE, __FILE__, __LINE__ + 1
           def #{name}_prefix_id
@@ -192,8 +190,6 @@ module PrefixedIds
             send("#{reflection.foreign_key}=", decoded_id)
           end
         CODE
-
-        association
       end
 
       def has_many(*args, &block)
