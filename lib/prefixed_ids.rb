@@ -167,12 +167,10 @@ module PrefixedIds
       end
 
       def belongs_to(name, *args, **options, &block)
-        result = super
+        super
 
-        # Rails doesn't document what belongs_to returns, so look the reflection up by name
         reflection = reflect_on_association(name)
-
-        return result if reflection.nil? || reflection.polymorphic?
+        return if reflection.polymorphic?
 
         # Skip helpers if the associated class can't be loaded yet, so Rails only raises when the association is used
         klass = begin
@@ -180,7 +178,7 @@ module PrefixedIds
         rescue NameError
           nil
         end
-        return result if klass.nil? || klass._prefix_id.blank?
+        return if klass.nil? || klass._prefix_id.blank?
 
         generated_association_methods.class_eval <<-CODE, __FILE__, __LINE__ + 1
           def #{name}_prefix_id
@@ -192,8 +190,6 @@ module PrefixedIds
             send("#{reflection.foreign_key}=", decoded_id)
           end
         CODE
-
-        result
       end
 
       def has_many(*args, &block)

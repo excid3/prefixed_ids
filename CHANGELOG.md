@@ -1,6 +1,6 @@
 ### Unreleased
 
-* Fix `belongs_to` raising `TypeError` on Rails main, where `add_reflection` no longer returns the reflections hash. The prefix ID helpers now look the reflection up with `reflect_on_association` instead of relying on `belongs_to`'s return value.
+* Fix `belongs_to` raising `TypeError` on Rails main.
 
 ### 1.9.1
 
